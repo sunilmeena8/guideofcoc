@@ -29,6 +29,9 @@ class _MyHomePageState extends State<MyHomePage> {
     'https://houseofclashers.com/r/clash-of-clans/images/resize/sneak_peeks.549x300q50.jpg',
     'https://houseofclashers.com/r/clash-of-clans/images/resize/clangames.574x300q50.jpg'
   ];
+  final List<String> homevillageAttrs = ['Attack strategy','Troops','Heroes','Base layouts','Defence','Spells'];
+  final List<String> buildervillageAttrs = ['Attack strategy','Troops','Battle Machine','Base layouts','Defence','Spells'];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       width: 300,
                                       color: Colors.black.withOpacity(0.5),
                                       child: Center(
-                                        child: Text("Attack strategy",
+                                        child: Text(homevillageAttrs[index],
                                             style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w400,
@@ -130,15 +133,17 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
+          SizedBox(
+            height: 30,
+            ),
           Container(
-            margin: EdgeInsets.only(top: 30),
             padding: EdgeInsets.only(left: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Builder Village",
+                  "Builder Base",
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w800,
@@ -155,8 +160,25 @@ class _MyHomePageState extends State<MyHomePage> {
                             margin: EdgeInsets.all(4.0),
                             child: Stack(
                               children: <Widget>[
-                                Image.network(imgList[index]),
-                                Text("data")
+                                Container(
+                                  child: Image.network(
+                                    imgList[index],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Positioned(
+                                    bottom: 0,
+                                    child: Container(
+                                      width: 300,
+                                      color: Colors.black.withOpacity(0.5),
+                                      child: Center(
+                                        child: Text(buildervillageAttrs[index],
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.white)),
+                                      ),
+                                    )),
                               ],
                             ))),
                   ),
