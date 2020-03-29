@@ -1,6 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import 'Builder base/attackstrategy.dart';
+import 'Builder base/baselayouts.dart';
+import 'Builder base/defence.dart';
+import 'Builder base/heroes.dart';
+import 'Builder base/troops.dart';
+import 'Home village/attackstrategy.dart';
+import 'Home village/baselayouts.dart';
+import 'Home village/defence.dart';
+import 'Home village/heroes.dart';
+import 'Home village/spells.dart';
+import 'Home village/troops.dart';
+
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -29,9 +42,27 @@ class _MyHomePageState extends State<MyHomePage> {
     'https://houseofclashers.com/r/clash-of-clans/images/resize/sneak_peeks.549x300q50.jpg',
     'https://houseofclashers.com/r/clash-of-clans/images/resize/clangames.574x300q50.jpg'
   ];
-  final List<String> homevillageAttrs = ['Attack strategy','Troops','Heroes','Base layouts','Defence','Spells'];
-  final List<String> buildervillageAttrs = ['Attack strategy','Troops','Battle Machine','Base layouts','Defence','Spells'];
+  final List<String> homevillageAttrs = [
+    'Base layouts',
+    'Attack strategy',
+    'Heroes',
+    'Troops',
+    'Spells',
+    'Defence',
+  ];
+  final List<String> buildervillageAttrs = [
+    'Base layouts',
+    'Attack strategy',
+    'Battle Machine',
+    'Defence',
+    'Troops',
+    'Trophies',
+  ];
+
   
+  var homeVillageFunctions = [HomeBaseBaseLayouts(),HomeBaseAttackStrategy(),HomeBaseHeroes(),HomeBaseTroops(),HomeBaseSpells(),HomeBaseDefence()];
+  var builderBaseFunctions = [BuilderBaseBaseLayouts(),BuilderBaseAttackStrategy(),BuilderBaseHeroes(),BuilderBaseDefence(),BuilderBaseTroops()];
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,31 +134,43 @@ class _MyHomePageState extends State<MyHomePage> {
                     scrollDirection: Axis.horizontal,
                     children: new List.generate(
                         imgList.length,
-                        (index) => Container(
-                            margin: EdgeInsets.all(4.0),
-                            child: Stack(
-                              children: <Widget>[
-                                Container(
-                                  child: Image.network(
-                                    imgList[index],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Positioned(
-                                    bottom: 0,
-                                    child: Container(
-                                      width: 300,
-                                      color: Colors.black.withOpacity(0.5),
-                                      child: Center(
-                                        child: Text(homevillageAttrs[index],
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.white)),
+                        (index) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => homeVillageFunctions[index]),
+                                );
+                              },
+                              child: Container(
+                                  margin: EdgeInsets.all(4.0),
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Container(
+                                        child: Image.network(
+                                          imgList[index],
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    )),
-                              ],
-                            ))),
+                                      Positioned(
+                                          bottom: 0,
+                                          child: Container(
+                                            width: 300,
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            child: Center(
+                                              child: Text(
+                                                  homevillageAttrs[index],
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.white)),
+                                            ),
+                                          )),
+                                    ],
+                                  )),
+                            )),
                   ),
                 )
               ],
@@ -135,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           SizedBox(
             height: 30,
-            ),
+          ),
           Container(
             padding: EdgeInsets.only(left: 10),
             child: Column(
@@ -155,32 +198,37 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: new List.generate(
-                        imgList.length,
-                        (index) => Container(
-                            margin: EdgeInsets.all(4.0),
-                            child: Stack(
-                              children: <Widget>[
-                                Container(
-                                  child: Image.network(
-                                    imgList[index],
-                                    fit: BoxFit.cover,
+                        imgList.length-1,
+                        (index) => GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => builderBaseFunctions[index]));
+                          },
+                          child: Container(
+                              margin: EdgeInsets.all(4.0),
+                              child: Stack(
+                                children: <Widget>[
+                                  Container(
+                                    child: Image.network(
+                                      imgList[index],
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                                Positioned(
-                                    bottom: 0,
-                                    child: Container(
-                                      width: 300,
-                                      color: Colors.black.withOpacity(0.5),
-                                      child: Center(
-                                        child: Text(buildervillageAttrs[index],
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.white)),
-                                      ),
-                                    )),
-                              ],
-                            ))),
+                                  Positioned(
+                                      bottom: 0,
+                                      child: Container(
+                                        width: 300,
+                                        color: Colors.black.withOpacity(0.5),
+                                        child: Center(
+                                          child: Text(buildervillageAttrs[index],
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.white)),
+                                        ),
+                                      )),
+                                ],
+                              )),
+                        )),
                   ),
                 )
               ],
@@ -192,12 +240,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget nDrawer() {
+    var textStyle = TextStyle(
+        fontSize: 35, fontWeight: FontWeight.w800, color: Colors.deepPurple);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text(' '),
+            child: Text('Guide of COC', style: textStyle),
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: NetworkImage(
@@ -208,68 +258,76 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 width: 5,
               ),
-              Icon(Icons.star_border,color: Colors.redAccent,size: 30,),
+              Icon(
+                Icons.star_border,
+                color: Colors.redAccent,
+                size: 30,
+              ),
               SizedBox(
                 width: 15,
               ),
               Text("Rate Us",
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.black)),
+                  style: TextStyle(fontSize: 25, color: Colors.black)),
             ],
           ),
           SizedBox(
-                height: 20,
-              ),
+            height: 20,
+          ),
           Row(
             children: <Widget>[
               SizedBox(
                 width: 5,
               ),
-              Icon(Icons.share,color: Colors.purple,size: 30,),
+              Icon(
+                Icons.share,
+                color: Colors.purple,
+                size: 30,
+              ),
               SizedBox(
                 width: 15,
               ),
               Text("Share",
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.black)),
+                  style: TextStyle(fontSize: 25, color: Colors.black)),
             ],
           ),
           SizedBox(
-                height: 20,
-              ),
+            height: 20,
+          ),
           Row(
             children: <Widget>[
               SizedBox(
                 width: 5,
               ),
-              Icon(Icons.book,color: Colors.brown,size: 30,),
+              Icon(
+                Icons.book,
+                color: Colors.brown,
+                size: 30,
+              ),
               SizedBox(
                 width: 15,
               ),
               Text("Privacy & Policy",
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.black)),
+                  style: TextStyle(fontSize: 25, color: Colors.black)),
             ],
           ),
           SizedBox(
-                height: 20,
-              ),
+            height: 20,
+          ),
           Row(
             children: <Widget>[
               SizedBox(
                 width: 5,
               ),
-              Icon(Icons.mail,color: Colors.pink,size: 30,),
+              Icon(
+                Icons.mail,
+                color: Colors.pink,
+                size: 30,
+              ),
               SizedBox(
                 width: 15,
               ),
               Text("Contact Us",
-                  style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.black)),
+                  style: TextStyle(fontSize: 25, color: Colors.black)),
             ],
           ),
         ],
@@ -277,3 +335,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
