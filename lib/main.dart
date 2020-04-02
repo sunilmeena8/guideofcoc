@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(
           "Guide of COC",
           style:
-              TextStyle(fontWeight: FontWeight.w800, color: Colors.deepPurple),
+              TextStyle(fontWeight:  FontWeight.w800, color: Colors.deepPurple),
         ),
         actions: <Widget>[
           GestureDetector(
