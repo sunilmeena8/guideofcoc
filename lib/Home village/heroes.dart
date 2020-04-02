@@ -21,7 +21,7 @@ class HomeBaseHeroes extends StatelessWidget {
             crossAxisCount: 2,
             // Generate 100 widgets that display their index in the List.
             children: new List.generate(
-                          4,
+                          heroesName.length,
                           (index) => GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -75,7 +75,7 @@ class HomeBaseHeroesView extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    final title = "Heroes";
+    final title = heroname;
     return Scaffold(
         appBar: AppBar(
           title: Text(title),

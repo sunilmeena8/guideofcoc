@@ -5,7 +5,7 @@ class HomeBaseDefence extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = 'Defences';
-    List<String> defenceName = ['Eagle Artillery','Inferno tower','X-bow','Hidden tesle','Air defence','Scattershot','Wizard tower','Archer tower','Canon','Mortar','Bomb tower','Air sweeper','Tornado trap','Air bomb','Air mine','Skeleton trap','Spring trap','Valkrie','Golem','Witch','Lava hound','Bowler'];
+    List<String> defenceName = ['Eagle Artillery','Inferno tower','X-bow','Hidden tesle','Air defence','Scattershot','Wizard tower','Archer tower','Canon','Mortar','Bomb tower','Air sweeper','Tornado trap','Air bomb','Air mine','Skeleton trap','Spring trap','Walls'];
 
     return Scaffold(
         appBar: AppBar(

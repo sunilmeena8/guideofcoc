@@ -5,7 +5,7 @@ class HomeBaseTroops extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = 'Troops';
-    List<String> troopName = ['Barbarian','Archer','Goblin','Wall breaker','Giant','Wizard','Healer','Balloon','Dragon','Baby dragon','Pekka','Miner','Yeti','Minion','Hog rider','Valkrie','Golem','Witch','Lava hound','Bowler'];
+    List<String> troopName = ['Barbarian','Archer','Goblin','Wall breaker','Giant','Wizard','Healer','Balloon','Dragon','Baby dragon','Pekka','Miner','Electro dragon','Yeti','Minion','Hog rider','Valkrie','Golem','Witch','Lava hound','Bowler'];
 
     return Scaffold(
         appBar: AppBar(
@@ -67,21 +67,21 @@ class HomeBaseTroops extends StatelessWidget {
 }
 
 class HomeBaseTroopsView extends StatelessWidget{
-  String heroname;
+  String name;
   final children = <Widget>[];
-  HomeBaseTroopsView(String heroname){
-    this.heroname = heroname;
+  HomeBaseTroopsView(String name){
+    this.name = name;
   }
 
   @override
   Widget build(BuildContext context){
-    final title = heroname;
+    final title = name;
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
         ),
         body: Center(
-          child: Text(heroname)
+          child: Text(name)
         )
       );
   }

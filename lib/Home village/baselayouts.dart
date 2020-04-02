@@ -5,7 +5,7 @@ class HomeBaseBaseLayouts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = 'Base Layouts';
-
+    var hallno = [13,12,11,10,9,8,7,6];
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -20,13 +20,13 @@ class HomeBaseBaseLayouts extends StatelessWidget {
             crossAxisCount: 2,
             // Generate 100 widgets that display their index in the List.
             children: new List.generate(
-                          8,
+                          hallno.length,
                           (index) => GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => HomeBaseBaseLayoutsView(index)),
+                                        builder: (context) => HomeBaseBaseLayoutsView(hallno[index])),
                                   );
                                 },
                                 child: Container(
@@ -47,7 +47,7 @@ class HomeBaseBaseLayouts extends StatelessWidget {
                                                   Colors.black.withOpacity(0.5),
                                               child: Center(
                                                 child: Text(
-                                                    "Town hall $index",
+                                                    "Town hall ${hallno[index]}",
                                                     style: TextStyle(
                                                         fontSize: 20,
                                                         fontWeight:
