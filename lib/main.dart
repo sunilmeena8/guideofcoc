@@ -5,11 +5,13 @@ import 'Builder base/attackstrategy.dart';
 import 'Builder base/baselayouts.dart';
 import 'Builder base/defence.dart';
 import 'Builder base/heroes.dart';
+import 'Builder base/otherbuildings.dart';
 import 'Builder base/troops.dart';
 import 'Home village/attackstrategy.dart';
 import 'Home village/baselayouts.dart';
 import 'Home village/defence.dart';
 import 'Home village/heroes.dart';
+import 'Home village/otherbuildings.dart';
 import 'Home village/spells.dart';
 import 'Home village/troops.dart';
 
@@ -40,7 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
     'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-sneaky-goblin-01.533x300q50.jpg',
     'https://houseofclashers.com/r/clash-of-clans/images/resize/super-barbarian-02.533x300q50.jpg',
     'https://houseofclashers.com/r/clash-of-clans/images/resize/sneak_peeks.549x300q50.jpg',
-    'https://houseofclashers.com/r/clash-of-clans/images/resize/clangames.574x300q50.jpg'
+    'https://houseofclashers.com/r/clash-of-clans/images/resize/clangames.574x300q50.jpg',
+    'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-sneaky-goblin-01.533x300q50.jpg',
   ];
   final List<String> homevillageAttrs = [
     'Base layouts',
@@ -49,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
     'Troops',
     'Spells',
     'Defence',
+    'Other Buildings',
   ];
   final List<String> buildervillageAttrs = [
     'Base layouts',
@@ -56,12 +60,12 @@ class _MyHomePageState extends State<MyHomePage> {
     'Battle Machine',
     'Defence',
     'Troops',
-    'Trophies',
+    'Other Buildings',
   ];
 
   
-  var homeVillageFunctions = [HomeBaseBaseLayouts(),HomeBaseAttackStrategy(),HomeBaseHeroes(),HomeBaseTroops(),HomeBaseSpells(),HomeBaseDefence()];
-  var builderBaseFunctions = [BuilderBaseBaseLayouts(),BuilderBaseAttackStrategy(),BuilderBaseHeroes(),BuilderBaseDefence(),BuilderBaseTroops()];
+  var homeVillageFunctions = [HomeBaseBaseLayouts(),HomeBaseAttackStrategy(),HomeBaseHeroes(),HomeBaseTroops(),HomeBaseSpells(),HomeBaseDefence(),HomeBaseOtherBuildings()];
+  var builderBaseFunctions = [BuilderBaseBaseLayouts(),BuilderBaseAttackStrategy(),BuilderBaseHeroes(),BuilderBaseDefence(),BuilderBaseTroops(),BuilderBaseOtherBuildings()];
 
 
   @override
@@ -133,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: new List.generate(
-                        imgList.length,
+                        homevillageAttrs.length,
                         (index) => GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -198,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: new List.generate(
-                        imgList.length-1,
+                        buildervillageAttrs.length,
                         (index) => GestureDetector(
                           onTap: (){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => builderBaseFunctions[index]));

@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 
-class HomeBaseTroops extends StatelessWidget {
+class BuilderBaseOtherBuildings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final title = 'Troops';
-    List<String> troopName = ['Barbarian','Archer','Goblin','Wall breaker','Giant','Wizard','Healer','Balloon','Dragon','Baby dragon','Pekka','Miner','Electro dragon','Yeti','Minion','Hog rider','Valkrie','Golem','Witch','Lava hound','Bowler'];
-
+    
+    final title = 'Other buildings';
+    List<String> buildingName = [
+      'Clock tower',
+      'Star Laboratory',
+      'Builder Barracks',
+      'Army camp',
+      'Gold Storage',
+      'Elixir Storage',
+      'Gold Mine',
+      'Elixir collector',
+      'Gem mine',
+      "OTTO Hut",
+    ];
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -20,13 +31,13 @@ class HomeBaseTroops extends StatelessWidget {
             crossAxisCount: 2,
             // Generate 100 widgets that display their index in the List.
             children: new List.generate(
-                          troopName.length,
+                          buildingName.length,
                           (index) => GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => HomeBaseTroopsView(troopName[index])),
+                                        builder: (context) => BuilderBaseOtherBuildingView(buildingName[index])),
                                   );
                                 },
                                 child: Container(
@@ -47,7 +58,7 @@ class HomeBaseTroops extends StatelessWidget {
                                                   Colors.black.withOpacity(0.5),
                                               child: Center(
                                                 child: Text(
-                                                    troopName[index],
+                                                    buildingName[index],
                                                     style: TextStyle(
                                                         fontSize: 20,
                                                         fontWeight:
@@ -65,10 +76,10 @@ class HomeBaseTroops extends StatelessWidget {
   }
 }
 
-class HomeBaseTroopsView extends StatelessWidget{
+class BuilderBaseOtherBuildingView extends StatelessWidget{
   String name;
   final children = <Widget>[];
-  HomeBaseTroopsView(String name){
+  BuilderBaseOtherBuildingView(String name){
     this.name = name;
   }
 
