@@ -15,7 +15,6 @@ import 'Home village/otherbuildings.dart';
 import 'Home village/spells.dart';
 import 'Home village/troops.dart';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -45,6 +44,24 @@ class _MyHomePageState extends State<MyHomePage> {
     'https://houseofclashers.com/r/clash-of-clans/images/resize/clangames.574x300q50.jpg',
     'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-sneaky-goblin-01.533x300q50.jpg',
   ];
+  final List<String> HomeVillageImgList = [
+    'images/base_layout.jpg',
+    'images/launch_image.jpg',
+    'images/heroes.jpg',
+    'images/troops.jpg',
+    'images/spells.png',
+    'images/defences.jpg',
+    'images/defences.jpg',
+    'images/otherbuildings.jpg',
+  ];
+  final List<String> BuilderBaseImgList = [
+    'images/base_layout.jpg',
+    'images/launch_image.jpg',
+    'images/heroes.jpg',
+    'images/heroes.jpg',
+    'images/heroes.jpg',
+    'images/heroes.jpg',
+  ];
   final List<String> homevillageAttrs = [
     'Base layouts',
     'Attack strategy',
@@ -63,10 +80,23 @@ class _MyHomePageState extends State<MyHomePage> {
     'Other Buildings',
   ];
 
-  
-  var homeVillageFunctions = [HomeBaseBaseLayouts(),HomeBaseAttackStrategy(),HomeBaseHeroes(),HomeBaseTroops(),HomeBaseSpells(),HomeBaseDefence(),HomeBaseOtherBuildings()];
-  var builderBaseFunctions = [BuilderBaseBaseLayouts(),BuilderBaseAttackStrategy(),BuilderBaseHeroes(),BuilderBaseDefence(),BuilderBaseTroops(),BuilderBaseOtherBuildings()];
-
+  var homeVillageFunctions = [
+    HomeBaseBaseLayouts(),
+    HomeBaseAttackStrategy(),
+    HomeBaseHeroes(),
+    HomeBaseTroops(),
+    HomeBaseSpells(),
+    HomeBaseDefence(),
+    HomeBaseOtherBuildings()
+  ];
+  var builderBaseFunctions = [
+    BuilderBaseBaseLayouts(),
+    BuilderBaseAttackStrategy(),
+    BuilderBaseHeroes(),
+    BuilderBaseDefence(),
+    BuilderBaseTroops(),
+    BuilderBaseOtherBuildings()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(
           "Guide of COC",
           style:
-              TextStyle(fontWeight:  FontWeight.w800, color: Colors.deepPurple),
+              TextStyle(fontWeight: FontWeight.w800, color: Colors.deepPurple),
         ),
         actions: <Widget>[
           GestureDetector(
@@ -143,7 +173,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => homeVillageFunctions[index]),
+                                      builder: (context) =>
+                                          homeVillageFunctions[index]),
                                 );
                               },
                               child: Container(
@@ -151,10 +182,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Stack(
                                     children: <Widget>[
                                       Container(
-                                        child: Image.network(
-                                          imgList[index],
-                                          fit: BoxFit.cover,
-                                        ),
+                                        child: Image(
+                                            image: AssetImage(
+                                                HomeVillageImgList[index])),
                                       ),
                                       Positioned(
                                           bottom: 0,
@@ -204,35 +234,41 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: new List.generate(
                         buildervillageAttrs.length,
                         (index) => GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => builderBaseFunctions[index]));
-                          },
-                          child: Container(
-                              margin: EdgeInsets.all(4.0),
-                              child: Stack(
-                                children: <Widget>[
-                                  Container(
-                                    child: Image.network(
-                                      imgList[index],
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Positioned(
-                                      bottom: 0,
-                                      child: Container(
-                                        width: 300,
-                                        color: Colors.black.withOpacity(0.5),
-                                        child: Center(
-                                          child: Text(buildervillageAttrs[index],
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.white)),
-                                        ),
-                                      )),
-                                ],
-                              )),
-                        )),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            builderBaseFunctions[index]));
+                              },
+                              child: Container(
+                                  margin: EdgeInsets.all(4.0),
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Container(
+                                        child: Image(
+                                            image: AssetImage(
+                                                HomeVillageImgList[index])),
+                                      ),
+                                      Positioned(
+                                          bottom: 0,
+                                          child: Container(
+                                            width: 300,
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            child: Center(
+                                              child: Text(
+                                                  buildervillageAttrs[index],
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.white)),
+                                            ),
+                                          )),
+                                    ],
+                                  )),
+                            )),
                   ),
                 )
               ],
@@ -339,4 +375,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-

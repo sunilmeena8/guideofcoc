@@ -5,8 +5,7 @@ class BuilderBaseOtherBuildings extends StatelessWidget {
   Widget build(BuildContext context) {
     
     final title = 'Other buildings';
-    List<String> buildingName = [
-      'Clock tower',
+    List<String> buildingName = [      'Clock tower',
       'Star Laboratory',
       'Builder Barracks',
       'Army camp',
