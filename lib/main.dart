@@ -44,23 +44,22 @@ class _MyHomePageState extends State<MyHomePage> {
     'https://houseofclashers.com/r/clash-of-clans/images/resize/clangames.574x300q50.jpg',
     'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-sneaky-goblin-01.533x300q50.jpg',
   ];
-  final List<String> HomeVillageImgList = [
+  var homeVillageImgList = [
     'images/base_layout.jpg',
     'images/launch_image.jpg',
     'images/heroes.jpg',
     'images/troops.jpg',
-    'images/spells.png',
-    'images/defences.jpg',
-    'images/defences.jpg',
-    'images/otherbuildings.jpg',
+    'images/spells.jpg',
+    'images/defences.png',
+    'images/otherbuildings.jpg' ,
   ];
-  final List<String> BuilderBaseImgList = [
-    'images/base_layout.jpg',
-    'images/launch_image.jpg',
-    'images/heroes.jpg',
-    'images/heroes.jpg',
-    'images/heroes.jpg',
-    'images/heroes.jpg',
+  var builderBaseImgList = [
+    'images/builder base/base_layout.png',
+    'images/builder base/attack_strategy.jpg',
+    'images/builder base/battle_machine.jpg',
+    'images/builder base/defence.jpg',
+    'images/builder base/troop.jpg',
+    'images/builder base/other_buildings.jpg',
   ];
   final List<String> homevillageAttrs = [
     'Base layouts',
@@ -179,12 +178,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               },
                               child: Container(
                                   margin: EdgeInsets.all(4.0),
+                                  
                                   child: Stack(
                                     children: <Widget>[
                                       Container(
                                         child: Image(
                                             image: AssetImage(
-                                                HomeVillageImgList[index])),
+                                                homeVillageImgList[index])),
                                       ),
                                       Positioned(
                                           bottom: 0,
@@ -248,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Container(
                                         child: Image(
                                             image: AssetImage(
-                                                HomeVillageImgList[index])),
+                                                builderBaseImgList[index])),
                                       ),
                                       Positioned(
                                           bottom: 0,
