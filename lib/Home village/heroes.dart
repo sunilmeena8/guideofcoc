@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeBaseHeroes extends StatelessWidget {
+  var heroes = [
+    'images/home base/heroes/barbarian_king.jpg',
+    'images/home base/heroes/archer_queen.jpg',
+    'images/home base/heroes/grand_warden.jpg',
+    'images/home base/heroes/royal_champion.jpg',
+  ];
+
   @override
   Widget build(BuildContext context) {
     final title = 'Heros';
@@ -35,10 +42,7 @@ class HomeBaseHeroes extends StatelessWidget {
                                     child: Stack(
                                       children: <Widget>[
                                         Container(
-                                          child: Image.network(
-                                            'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-super-troops.547x300q50.jpg',
-                                            fit: BoxFit.cover,
-                                          ),
+                                          child: Image(image: AssetImage(heroes[index])),
                                         ),
                                         Positioned(
                                             bottom: 0,

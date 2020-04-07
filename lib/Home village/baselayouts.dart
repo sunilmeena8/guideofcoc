@@ -1,7 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeBaseBaseLayouts extends StatelessWidget {
+  var townHalls = [
+    'images/home base/th13.jpg',
+    'images/home base/th12.jpg',
+    'images/home base/th11.jpg',
+    'images/home base/th10.jpg',
+    'images/home base/th9.jpg',
+    'images/home base/th8.jpg',
+    'images/home base/th7.jpg',
+    'images/home base/th6.jpg',
+  ];
+
   @override
   Widget build(BuildContext context) {
     final title = 'Base Layouts';
@@ -34,10 +45,9 @@ class HomeBaseBaseLayouts extends StatelessWidget {
                                     child: Stack(
                                       children: <Widget>[
                                         Container(
-                                          child: Image.network(
-                                            'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-super-troops.547x300q50.jpg',
-                                            fit: BoxFit.cover,
-                                          ),
+                                          child: Image(
+                                            image: AssetImage(
+                                                townHalls[index])),
                                         ),
                                         Positioned(
                                             bottom: 0,

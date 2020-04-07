@@ -1,7 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/material.dart'; 
 
 class HomeBaseSpells extends StatelessWidget {
+  var spells = [
+    'images/home base/spells/healing.jpg',
+    'images/home base/spells/lightning.jpg',
+    'images/home base/spells/rage.jpg',
+    'images/home base/spells/jump.jpg',
+    'images/home base/spells/clone.jpg',
+    'images/home base/spells/freeze.jpg',
+    'images/home base/spells/earthquake.jpg',
+    'images/home base/spells/poison.jpg',
+    'images/home base/spells/haste.jpg',
+    'images/home base/spells/skeleton.jpg',
+  ];
   @override
   Widget build(BuildContext context) {
     final title = 'Spells';
@@ -35,10 +46,7 @@ class HomeBaseSpells extends StatelessWidget {
                                     child: Stack(
                                       children: <Widget>[
                                         Container(
-                                          child: Image.network(
-                                            'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-super-troops.547x300q50.jpg',
-                                            fit: BoxFit.cover,
-                                          ),
+                                          child: Image(image: AssetImage(spells[index])),
                                         ),
                                         Positioned(
                                             bottom: 0,
