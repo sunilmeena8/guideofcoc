@@ -12,11 +12,12 @@ class HomeBaseSpells extends StatelessWidget {
     'images/home base/spells/poison.jpg',
     'images/home base/spells/haste.jpg',
     'images/home base/spells/skeleton.jpg',
+    'images/home base/spells/bat.jpg',
   ];
   @override
   Widget build(BuildContext context) {
     final title = 'Spells';
-    List<String> spellName = ['Healing','Lightning','Rage','Jump','Clone','Earthquake','Poison','Haste','Skeleton','Bat'];
+    List<String> spellName = ['Healing','Lightning','Rage','Jump','Clone','freeze','Earthquake','Poison','Haste','Skeleton','Bat'];
 
     return Scaffold(
         appBar: AppBar(

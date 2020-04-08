@@ -22,6 +22,23 @@ class HomeBaseOtherBuildings extends StatelessWidget {
       "Builder's Hut",
     ];
 
+    var otherBuildingsImg = [
+      'images/home base/other buildings/clancastle.jpg',
+      'images/home base/other buildings/laboratory.jpg',
+      'images/home base/other buildings/barracks.jpg',
+      'images/home base/other buildings/darkbarracks.jpg',
+      'images/home base/other buildings/armycamp.jpg',
+      'images/home base/other buildings/spellfactory.jpg',
+      'images/home base/other buildings/darkspellfactory.jpg',
+      'images/home base/other buildings/goldstorage.jpg',
+      'images/home base/other buildings/elixirstorage.jpg',
+      'images/home base/other buildings/darkelixirstorage.jpg',
+      'images/home base/other buildings/goldmine.jpg',
+      'images/home base/other buildings/elixircollector.jpg',
+      'images/home base/other buildings/darkelixirdrill.jpg',
+      'images/home base/other buildings/builderhut.jpg',
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -48,11 +65,8 @@ class HomeBaseOtherBuildings extends StatelessWidget {
                         child: Stack(
                       children: <Widget>[
                         Container(
-                          child: Image.network(
-                            'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-super-troops.547x300q50.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                            child:
+                                Image(image: AssetImage(otherBuildingsImg[index]))),
                         Positioned(
                             bottom: 0,
                             child: Container(
