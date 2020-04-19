@@ -30,6 +30,7 @@ flutter:
    - images/home base/spells/
    - images/home base/defence/
    - images/home base/other buildings/
+   - images/builder base/builderhall/
    - images/other/
 
   # An image asset can refer to one or more resolution-specific "variants", see

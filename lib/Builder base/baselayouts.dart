@@ -6,6 +6,14 @@ class BuilderBaseBaseLayouts extends StatelessWidget {
   Widget build(BuildContext context) {
     final title = 'Base Layouts';
     var hallno = [9,8,7,6,5];
+    var builderHalls = [
+    'images/builder base/builderhall/bh9.jpg',
+    'images/builder base/builderhall/bh8.jpg',
+    'images/builder base/builderhall/bh7.jpg',
+    'images/builder base/builderhall/bh6.jpg',
+    'images/builder base/builderhall/bh5.jpg',
+  ];
+
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
@@ -34,10 +42,7 @@ class BuilderBaseBaseLayouts extends StatelessWidget {
                                     child: Stack(
                                       children: <Widget>[
                                         Container(
-                                          child: Image.network(
-                                            'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-super-troops.547x300q50.jpg',
-                                            fit: BoxFit.cover,
-                                          ),
+                                          child: Image(image: AssetImage(builderHalls[index]))
                                         ),
                                         Positioned(
                                             bottom: 0,
