@@ -1,19 +1,20 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:guideofcoc/Home.dart';
 
-import 'Builder base/attackstrategy.dart';
-import 'Builder base/baselayouts.dart';
-import 'Builder base/defence.dart';
-import 'Builder base/heroes.dart';
-import 'Builder base/otherbuildings.dart';
-import 'Builder base/troops.dart';
-import 'Home village/attackstrategy.dart';
-import 'Home village/baselayouts.dart';
-import 'Home village/defence.dart';
-import 'Home village/heroes.dart';
-import 'Home village/otherbuildings.dart';
-import 'Home village/spells.dart';
-import 'Home village/troops.dart';
+import 'Builderbase/attackstrategy.dart';
+import 'Builderbase/baselayouts.dart';
+import 'Builderbase/defence.dart';
+import 'Builderbase/heroes.dart';
+import 'Builderbase/otherbuildings.dart';
+import 'Builderbase/troops.dart';
+import 'Homevillage/attackstrategy.dart';
+import 'Homevillage/baselayouts.dart';
+import 'Homevillage/defence.dart';
+import 'Homevillage/heroes.dart';
+import 'Homevillage/otherbuildings.dart';
+import 'Homevillage/spells.dart';
+import 'Homevillage/troops.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.deepOrange),
-      home: MyHomePage(),
+      home: Home(),
     );
   }
 }
