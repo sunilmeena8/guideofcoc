@@ -19,7 +19,6 @@ class _HomeState extends State<Home> {
   ];
   CarouselSlider topSlider;
 
-
   @override
   void initState() {
     topSlider = CarouselSlider(
@@ -53,15 +52,15 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Color(0xa0EFF5F4),
         title: Text(
-              'COC Guide',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 24,
-                color: const Color(0xff000000),
-                fontWeight: FontWeight.w700,
-              ),
-              textAlign: TextAlign.left,
-            ),
+          'COC Guide',
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 24,
+            color: const Color(0xff000000),
+            fontWeight: FontWeight.w700,
+          ),
+          textAlign: TextAlign.left,
+        ),
         actions: <Widget>[
           GestureDetector(
             onTap: () {},
@@ -72,113 +71,11 @@ class _HomeState extends State<Home> {
           )
         ],
       ),
-      body: Stack(
+      body: ListView(
         children: <Widget>[
+          Container(margin: EdgeInsets.only(top: 10), child: topSlider),
           Container(
-            margin: EdgeInsets.only(top: 10),
-            child: topSlider),
-           Transform.translate(
-            offset: Offset(220.75, 287.52),
-            child:
-                // Adobe XD layer: '08.media' (group)
-                Stack(
-              children: <Widget>[
-                // Adobe XD layer: 'Rectangle 13 copy 4' (shape)
-                Container(
-                  width: 178.2,
-                  height: 176.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: const Color(0xffffffff),
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(13.0, 20.0),
-                  child:
-                      // Adobe XD layer: 'Rectangle 13 copy 13' (shape)
-                      Container(
-                    width: 35.0,
-                    height: 35.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: const Color(0x1a1e98d4),
-                    ),
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(20.0, 35.15),
-                  child:
-                      // Adobe XD layer: 'Shape 558' (shape)
-                      SvgPicture.string(
-                    _svg_u5or71,
-                    allowDrawingOutsideViewBox: true,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(16.0, 287.52),
-            child:
-                // Adobe XD layer: '03.Marketting' (group)
-                Stack(
-              children: <Widget>[
-                // Adobe XD layer: 'marketing background' (shape)
-                Container(
-                  width: 178.0,
-                  height: 176.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: const Color(0xffffffff),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x1a7364f8),
-                        offset: Offset(-2.723942995071411, 5.346039295196533),
-                        blurRadius: 18,
-                      ),
-                    ],
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(12.0, 122.0),
-                  child:
-                      // Adobe XD layer: 'Rectangle 13 copy 15' (shape)
-                      Container(
-                    width: 153.0,
-                    height: 45.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: const Color(0x0dfdbc5a),
-                    ),
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(12.0, 20.0),
-                  child:
-                      // Adobe XD layer: 'Rectangle 13 copy 8' (shape)
-                      Container(
-                    width: 35.0,
-                    height: 35.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: const Color(0x1afdbc5a),
-                    ),
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(20.0, 29.0),
-                  child:
-                      // Adobe XD layer: 'Shape 550' (shape)
-                      SvgPicture.string(
-                    _svg_fjhovl,
-                    allowDrawingOutsideViewBox: true,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(14.57, 222.08),
+            margin: EdgeInsets.only(top: 10, bottom: 5, left: 10),
             child: Text(
               'Home Village',
               style: TextStyle(
@@ -191,8 +88,145 @@ class _HomeState extends State<Home> {
               textAlign: TextAlign.left,
             ),
           ),
-          Transform.translate(
-            offset: Offset(19.57, 477.75),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      width: 178.0,
+                      height: 176.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        color: const Color(0xffffffff),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0x1a7364f8),
+                            offset:
+                                Offset(-2.723942995071411, 5.346039295196533),
+                            blurRadius: 18,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(12.0, 122.0),
+                      child: Container(
+                        width: 153.0,
+                        height: 45.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: const Color(0x0dfdbc5a),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 2,
+                      left: 4,
+                      child: Container(
+                        width: 150.0,
+                        height: 40.0,
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: const Color(0x0d7cb832),
+                        ),
+                        child: Text(
+                          'Base Layouts',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                            color: const Color(0xff0f0250),
+                            letterSpacing: 0.24,
+                            fontWeight: FontWeight.w600,
+                            height: 1.875,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(12.0, 20.0),
+                      child: Container(
+                        width: 35.0,
+                        height: 35.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: const Color(0x1afdbc5a),
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(20.0, 29.0),
+                      child: SvgPicture.string(
+                        _svg_fjhovl,
+                        allowDrawingOutsideViewBox: true,
+                      ),
+                    ),
+                  ],
+                ),
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      width: 178.2,
+                      height: 176.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        color: const Color(0xffffffff),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(13.0, 20.0),
+                      child: Container(
+                        width: 35.0,
+                        height: 35.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: const Color(0x1a1e98d4),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 2,
+                      left: 4,
+                      child: Container(
+                        width: 150.0,
+                        height: 40.0,
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: const Color(0x0d7cb832),
+                        ),
+                        child: Text(
+                          'Attack Videos',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                            color: const Color(0xff0f0250),
+                            letterSpacing: 0.24,
+                            fontWeight: FontWeight.w600,
+                            height: 1.875,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(20.0, 35.15),
+                      child: SvgPicture.string(
+                        _svg_u5or71,
+                        allowDrawingOutsideViewBox: true,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10, bottom: 5, left: 10),
             child: Text(
               'Builder Base',
               style: TextStyle(
@@ -205,190 +239,142 @@ class _HomeState extends State<Home> {
               textAlign: TextAlign.left,
             ),
           ),
-          Transform.translate(
-            offset: Offset(219.75, 543.52),
-            child:
-                // Adobe XD layer: '08.media' (group)
-                Stack(
+
+           Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                // Adobe XD layer: 'Rectangle 13 copy 4' (shape)
-                Container(
-                  width: 178.2,
-                  height: 176.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: const Color(0xffffffff),
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(13.0, 20.0),
-                  child:
-                      // Adobe XD layer: 'Rectangle 13 copy 13' (shape)
-                      Container(
-                    width: 35.0,
-                    height: 35.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: const Color(0x1a1e98d4),
-                    ),
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(20.0, 35.15),
-                  child:
-                      // Adobe XD layer: 'Shape 558' (shape)
-                      SvgPicture.string(
-                    _svg_u5or71,
-                    allowDrawingOutsideViewBox: true,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(15.0, 543.52),
-            child:
-                // Adobe XD layer: '03.Marketting' (group)
                 Stack(
-              children: <Widget>[
-                // Adobe XD layer: 'marketing background' (shape)
-                Container(
-                  width: 178.0,
-                  height: 176.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: const Color(0xffffffff),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x1a7364f8),
-                        offset: Offset(-2.723942995071411, 5.346039295196533),
-                        blurRadius: 18,
+                  children: <Widget>[
+                    Container(
+                      width: 178.0,
+                      height: 176.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        color: const Color(0xffffffff),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0x1a7364f8),
+                            offset:
+                                Offset(-2.723942995071411, 5.346039295196533),
+                            blurRadius: 18,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(12.0, 20.0),
-                  child:
-                      // Adobe XD layer: 'Rectangle 13 copy 8' (shape)
-                      Container(
-                    width: 35.0,
-                    height: 35.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: const Color(0x1afdbc5a),
                     ),
-                  ),
+                    Transform.translate(
+                      offset: Offset(12.0, 122.0),
+                      child: Container(
+                        width: 153.0,
+                        height: 45.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: const Color(0x0dfdbc5a),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 2,
+                      left: 4,
+                      child: Container(
+                        width: 150.0,
+                        height: 40.0,
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: const Color(0x0d7cb832),
+                        ),
+                        child: Text(
+                          'Base Layouts',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                            color: const Color(0xff0f0250),
+                            letterSpacing: 0.24,
+                            fontWeight: FontWeight.w600,
+                            height: 1.875,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(12.0, 20.0),
+                      child: Container(
+                        width: 35.0,
+                        height: 35.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: const Color(0x1afdbc5a),
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(20.0, 29.0),
+                      child: SvgPicture.string(
+                        _svg_fjhovl,
+                        allowDrawingOutsideViewBox: true,
+                      ),
+                    ),
+                  ],
                 ),
-                Transform.translate(
-                  offset: Offset(20.0, 29.0),
-                  child:
-                      // Adobe XD layer: 'Shape 550' (shape)
-                      SvgPicture.string(
-                    _svg_fjhovl,
-                    allowDrawingOutsideViewBox: true,
-                  ),
-                ),
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      width: 178.2,
+                      height: 176.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        color: const Color(0xffffffff),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(13.0, 20.0),
+                      child: Container(
+                        width: 35.0,
+                        height: 35.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: const Color(0x1a1e98d4),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 2,
+                      left: 4,
+                      child: Container(
+                        width: 150.0,
+                        height: 40.0,
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: const Color(0x0d7cb832),
+                        ),
+                        child: Text(
+                          'Attack Videos',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 16,
+                            color: const Color(0xff0f0250),
+                            letterSpacing: 0.24,
+                            fontWeight: FontWeight.w600,
+                            height: 1.875,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(20.0, 35.15),
+                      child: SvgPicture.string(
+                        _svg_u5or71,
+                        allowDrawingOutsideViewBox: true,
+                      ),
+                    ),
+                  ],
+                )
               ],
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(232.0, 409.0),
-            child:
-                // Adobe XD layer: 'Rectangle 13 copy 14' (shape)
-                Container(
-              width: 156.0,
-              height: 47.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: const Color(0x0d7cb832),
-              ),
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(243.0, 415.52),
-            child: Text(
-              'Attack Videos',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 16,
-                color: const Color(0xff0f0250),
-                letterSpacing: 0.24,
-                fontWeight: FontWeight.w600,
-                height: 1.875,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(232.0, 665.0),
-            child:
-                // Adobe XD layer: 'Rectangle 13 copy 14' (shape)
-                Container(
-              width: 156.0,
-              height: 47.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: const Color(0x0d7cb832),
-              ),
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(243.0, 669.52),
-            child: Text(
-              'Attack Videos',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 16,
-                color: const Color(0xff0f0250),
-                letterSpacing: 0.24,
-                fontWeight: FontWeight.w600,
-                height: 1.875,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(38.0, 413.52),
-            child: Text(
-              'Base Layouts',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 16,
-                color: const Color(0xff0f0250),
-                letterSpacing: 0.24,
-                fontWeight: FontWeight.w600,
-                height: 1.875,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(25.5, 666.52),
-            child:
-                // Adobe XD layer: 'Rectangle 13 copy 15' (shape)
-                Container(
-              width: 160.5,
-              height: 45.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: const Color(0x0dfdbc5a),
-              ),
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(35.5, 670.52),
-            child: Text(
-              'Base Layouts',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 16,
-                color: const Color(0xff0f0250),
-                letterSpacing: 0.24,
-                fontWeight: FontWeight.w600,
-                height: 1.875,
-              ),
-              textAlign: TextAlign.left,
             ),
           ),
         ],
