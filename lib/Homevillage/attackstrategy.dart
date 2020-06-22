@@ -1,123 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomeBaseAttackStrategy extends StatelessWidget {
-  var townHalls = [
-    'images/home base/th13.jpg',
-    'images/home base/th12.jpg',
-    'images/home base/th11.jpg',
-    'images/home base/th10.jpg',
-    'images/home base/th9.jpg',
-    'images/home base/th8.jpg',
-    'images/home base/th7.jpg',
-    'images/home base/th6.jpg',
-  ];
+class HomeBaseAttackStrategy extends StatefulWidget {
+  @override
+  _HomeBaseAttackStrategyState createState() => _HomeBaseAttackStrategyState();
+}
+
+class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy>
+    with SingleTickerProviderStateMixin {
+ 
+   bool isOpened = false;
+  AnimationController _animationController;
+  Animation<Color> _buttonColor;
+  Animation<double> _animateIcon;
+  Animation<double> _translateButton;
+  Curve _curve = Curves.easeOut;
+  double _fabHeight = 56.0;
+
+    String dropdownValue = 'One';
+
+
+  @override
+  initState() {
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+          ..addListener(() {
+            setState(() {});
+          });
+    _animateIcon =
+        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+    _buttonColor = ColorTween(
+      begin: Colors.blue,
+      end: Colors.red,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Interval(
+        0.00,
+        1.00,
+        curve: Curves.linear,
+      ),
+    ));
+    _translateButton = Tween<double>(
+      begin: _fabHeight,
+      end: -14.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Interval(
+        0.0,
+        0.75,
+        curve: _curve,
+      ),
+    ));
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  animate() {
+    if (!isOpened) {
+      _animationController.forward();
+    } else {
+      _animationController.reverse();
+    }
+    isOpened = !isOpened;
+  }
+
+  Widget toggle() {
+    return FloatingActionButton.extended(
+      onPressed: null, 
+      icon: Icon(Icons.add),
+      label: Text("data"),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final title = 'Attack Strategy';
     var hallno = [13, 12, 11, 10, 9, 8, 7, 6];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
-      body: Center(
-        child: GridView.count(
-          // Create a grid with 2 columns. If you change the scrollDirection to
-          // horizontal, this produces 2 rows.
-          crossAxisCount: 2,
-          // Generate 100 widgets that display their index in the List.
-          children: new List.generate(
-              hallno.length,
-              (index) => GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                AttackStrategyView(hallno[index])),
-                      );
-                    },
-                    child: Container(
-                        // margin: EdgeInsets.all(1.0),
-                        child: Stack(
-                      children: <Widget>[
-                        Container(
-                          child: Image(image: AssetImage(townHalls[index])),
-                        ),
-                        Positioned(
-                            bottom: 0,
-                            child: Container(
-                              width: 300,
-                              color: Colors.black.withOpacity(0.5),
-                              child: Center(
-                                child: Text("Town hall ${hallno[index]}",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white)),
-                              ),
-                            )),
-                      ],
-                    )),
-                  )),
-        ),
-      ),
-    );
-  }
-}
-
-class AttackStrategyView extends StatelessWidget {
-  int townHall;
-  final children = <Widget>[];
-  AttackStrategyView(int townHall) {
-    this.townHall = townHall;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final title = "Attack Strategy";
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: GridView.count(
-        // Create a grid with 2 columns. If you change the scrollDirection to
-        // horizontal, this produces 2 rows.
-        crossAxisCount: 1,
-        // Generate 100 widgets that display their index in the List.
-        children: new List.generate(
-            8,
-            (index) => GestureDetector(
-                  onTap: () => launch(
-                      'youtube.com/watch?v=ixkoVwKQaJg&list=RDEMosgKaT7FZkH72hYMznTFHA&index=24'),
-                  child: Container(
-                      // margin: EdgeInsets.all(1.0),
-                      child: Stack(
-                    children: <Widget>[
-                      Container(
-                        child: Image.network(
-                          'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-super-troops.547x300q50.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned(
-                          bottom: 0,
-                          child: Container(
-                            width: 300,
-                            color: Colors.black.withOpacity(0.5),
-                            child: Center(
-                              child: Text("Town hall $index",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white)),
-                            ),
-                          )),
-                    ],
-                  )),
-                )),
-      ),
+      floatingActionButton:   Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        toggle(),
+      ],
+    ),
     );
   }
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "452048845778",
+    "firebase_url": "https://cocguide-b626e.firebaseio.com",
+    "project_id": "cocguide-b626e",
+    "storage_bucket": "cocguide-b626e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452048845778:android:715ca6d00f736b8012e60b",
+        "android_client_info": {
+          "package_name": "com.example.guideofcoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452048845778-74hq7qdrfmgc1uvr1hv0u7tkbrrtp6u2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmHMKaKr7ujzPC1DxRCiRLfT0lVWCyBvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452048845778-74hq7qdrfmgc1uvr1hv0u7tkbrrtp6u2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

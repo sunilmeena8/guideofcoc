@@ -2,6 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:guideofcoc/Builderbase/attackstrategy.dart';
+import 'package:guideofcoc/Builderbase/baselayouts.dart';
+import 'package:guideofcoc/Homevillage/attackstrategy.dart';
+import 'package:guideofcoc/Homevillage/baselayouts.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -93,134 +98,142 @@ class _HomeState extends State<Home> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      width: 178.0,
-                      height: 176.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.0),
-                        color: const Color(0xffffffff),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x1a7364f8),
-                            offset:
-                                Offset(-2.723942995071411, 5.346039295196533),
-                            blurRadius: 18,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeBaseBaseLayouts()),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        width: 178.0,
+                        height: 176.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          color: const Color(0xffffffff),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x1a7364f8),
+                              offset:
+                                  Offset(-2.723942995071411, 5.346039295196533),
+                              blurRadius: 18,
+                            ),
+                          ],
+                        ),
+                      ),
+                     
+                      Positioned(
+                        bottom: 4,
+                        left: 5,
+                        child: Container(
+                          width: 150.0,
+                          height: 40.0,
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: const Color(0x0d7cb832),
                           ),
-                        ],
-                      ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(12.0, 122.0),
-                      child: Container(
-                        width: 153.0,
-                        height: 45.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: const Color(0x0dfdbc5a),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 2,
-                      left: 4,
-                      child: Container(
-                        width: 150.0,
-                        height: 40.0,
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: const Color(0x0d7cb832),
-                        ),
-                        child: Text(
-                          'Base Layouts',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 16,
-                            color: const Color(0xff0f0250),
-                            letterSpacing: 0.24,
-                            fontWeight: FontWeight.w600,
-                            height: 1.875,
+                          child: Text(
+                            'Base Layouts',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 16,
+                              color: const Color(0xff0f0250),
+                              letterSpacing: 0.24,
+                              fontWeight: FontWeight.w600,
+                              height: 1.875,
+                            ),
+                            textAlign: TextAlign.left,
                           ),
-                          textAlign: TextAlign.left,
                         ),
                       ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(12.0, 20.0),
-                      child: Container(
-                        width: 35.0,
-                        height: 35.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: const Color(0x1afdbc5a),
+                      Transform.translate(
+                        offset: Offset(12.0, 20.0),
+                        child: Container(
+                          width: 35.0,
+                          height: 35.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: const Color(0x1afdbc5a),
+                          ),
                         ),
                       ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(20.0, 29.0),
-                      child: SvgPicture.string(
-                        _svg_fjhovl,
-                        allowDrawingOutsideViewBox: true,
+                      Transform.translate(
+                        offset: Offset(20.0, 29.0),
+                        child: SvgPicture.string(
+                          _svg_fjhovl,
+                          allowDrawingOutsideViewBox: true,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      width: 178.2,
-                      height: 176.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.0),
-                        color: const Color(0xffffffff),
-                      ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(13.0, 20.0),
-                      child: Container(
-                        width: 35.0,
-                        height: 35.0,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeBaseAttackStrategy()),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        width: 178.2,
+                        height: 176.0,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: const Color(0x1a1e98d4),
+                          borderRadius: BorderRadius.circular(15.0),
+                          color: const Color(0xffffffff),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 2,
-                      left: 4,
-                      child: Container(
-                        width: 150.0,
-                        height: 40.0,
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: const Color(0x0d7cb832),
-                        ),
-                        child: Text(
-                          'Attack Videos',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 16,
-                            color: const Color(0xff0f0250),
-                            letterSpacing: 0.24,
-                            fontWeight: FontWeight.w600,
-                            height: 1.875,
+                      Transform.translate(
+                        offset: Offset(13.0, 20.0),
+                        child: Container(
+                          width: 35.0,
+                          height: 35.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: const Color(0x1a1e98d4),
                           ),
-                          textAlign: TextAlign.left,
                         ),
                       ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(20.0, 35.15),
-                      child: SvgPicture.string(
-                        _svg_u5or71,
-                        allowDrawingOutsideViewBox: true,
+                      Positioned(
+                        bottom: 2,
+                        left: 4,
+                        child: Container(
+                          width: 150.0,
+                          height: 40.0,
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: const Color(0x0d7cb832),
+                          ),
+                          child: Text(
+                            'Attack Videos',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 16,
+                              color: const Color(0xff0f0250),
+                              letterSpacing: 0.24,
+                              fontWeight: FontWeight.w600,
+                              height: 1.875,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      Transform.translate(
+                        offset: Offset(20.0, 35.15),
+                        child: SvgPicture.string(
+                          _svg_u5or71,
+                          allowDrawingOutsideViewBox: true,
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -239,140 +252,157 @@ class _HomeState extends State<Home> {
               textAlign: TextAlign.left,
             ),
           ),
-
-           Container(
+          Container(
             margin: EdgeInsets.symmetric(horizontal: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      width: 178.0,
-                      height: 176.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.0),
-                        color: const Color(0xffffffff),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x1a7364f8),
-                            offset:
-                                Offset(-2.723942995071411, 5.346039295196533),
-                            blurRadius: 18,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BuilderBaseBaseLayouts()),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        width: 178.0,
+                        height: 176.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          color: const Color(0xffffffff),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x1a7364f8),
+                              offset:
+                                  Offset(-2.723942995071411, 5.346039295196533),
+                              blurRadius: 18,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Transform.translate(
+                        offset: Offset(12.0, 122.0),
+                        child: Container(
+                          width: 153.0,
+                          height: 45.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: const Color(0x0dfdbc5a),
                           ),
-                        ],
-                      ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(12.0, 122.0),
-                      child: Container(
-                        width: 153.0,
-                        height: 45.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: const Color(0x0dfdbc5a),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 2,
-                      left: 4,
-                      child: Container(
-                        width: 150.0,
-                        height: 40.0,
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: const Color(0x0d7cb832),
-                        ),
-                        child: Text(
-                          'Base Layouts',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 16,
-                            color: const Color(0xff0f0250),
-                            letterSpacing: 0.24,
-                            fontWeight: FontWeight.w600,
-                            height: 1.875,
+                      Positioned(
+                        bottom: 2,
+                        left: 4,
+                        child: Container(
+                          width: 150.0,
+                          height: 40.0,
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: const Color(0x0d7cb832),
                           ),
-                          textAlign: TextAlign.left,
+                          child: Text(
+                            'Base Layouts',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 16,
+                              color: const Color(0xff0f0250),
+                              letterSpacing: 0.24,
+                              fontWeight: FontWeight.w600,
+                              height: 1.875,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
                         ),
                       ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(12.0, 20.0),
-                      child: Container(
-                        width: 35.0,
-                        height: 35.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: const Color(0x1afdbc5a),
+                      Transform.translate(
+                        offset: Offset(12.0, 20.0),
+                        child: Container(
+                          width: 35.0,
+                          height: 35.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: const Color(0x1afdbc5a),
+                          ),
                         ),
                       ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(20.0, 29.0),
-                      child: SvgPicture.string(
-                        _svg_fjhovl,
-                        allowDrawingOutsideViewBox: true,
+                      Transform.translate(
+                        offset: Offset(20.0, 29.0),
+                        child: SvgPicture.string(
+                          _svg_fjhovl,
+                          allowDrawingOutsideViewBox: true,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Stack(
-                  children: <Widget>[
-                    Container(
-                      width: 178.2,
-                      height: 176.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.0),
-                        color: const Color(0xffffffff),
-                      ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(13.0, 20.0),
-                      child: Container(
-                        width: 35.0,
-                        height: 35.0,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BuilderBaseAttackStrategy()),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        width: 178.2,
+                        height: 176.0,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: const Color(0x1a1e98d4),
+                          borderRadius: BorderRadius.circular(15.0),
+                          color: const Color(0xffffffff),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 2,
-                      left: 4,
-                      child: Container(
-                        width: 150.0,
-                        height: 40.0,
-                        padding: EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: const Color(0x0d7cb832),
-                        ),
-                        child: Text(
-                          'Attack Videos',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 16,
-                            color: const Color(0xff0f0250),
-                            letterSpacing: 0.24,
-                            fontWeight: FontWeight.w600,
-                            height: 1.875,
+                      Transform.translate(
+                        offset: Offset(13.0, 20.0),
+                        child: Container(
+                          width: 35.0,
+                          height: 35.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: const Color(0x1a1e98d4),
                           ),
-                          textAlign: TextAlign.left,
                         ),
                       ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(20.0, 35.15),
-                      child: SvgPicture.string(
-                        _svg_u5or71,
-                        allowDrawingOutsideViewBox: true,
+                      Positioned(
+                        bottom: 2,
+                        left: 4,
+                        child: Container(
+                          width: 150.0,
+                          height: 40.0,
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: const Color(0x0d7cb832),
+                          ),
+                          child: Text(
+                            'Attack Videos',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 16,
+                              color: const Color(0xff0f0250),
+                              letterSpacing: 0.24,
+                              fontWeight: FontWeight.w600,
+                              height: 1.875,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      Transform.translate(
+                        offset: Offset(20.0, 35.15),
+                        child: SvgPicture.string(
+                          _svg_u5or71,
+                          allowDrawingOutsideViewBox: true,
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
