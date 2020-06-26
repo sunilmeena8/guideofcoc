@@ -1,3 +1,6 @@
+
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 class BuilderBaseBaseLayouts extends StatefulWidget {
@@ -70,7 +73,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[  
-                 Image.asset('assets/not-found.png',width: 40,height:40.0),
+                 Image.asset('images/not-found.png',width: 40,height:40.0),
                   SizedBox(height: 10.0,),             
                 Text(
                   'No Activities Yet',
