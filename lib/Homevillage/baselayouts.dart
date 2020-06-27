@@ -3,10 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:guideofcoc/favourities.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
+import 'package:localstorage/localstorage.dart';
 
 class HomeBaseBaseLayouts extends StatefulWidget {
   @override
   _HomeBaseBaseLayoutsState createState() => _HomeBaseBaseLayoutsState();
+}
+
+class BaseLayoutItem {
+  String url;
+  String download_url;
+  bool favourite;
+  BaseLayoutItem({this.url, this.download_url, this.favourite});
+  toJSONEncodable() {
+    Map<String, dynamic> m = new Map();
+
+    m['url'] = url;
+    m['download_url'] = download_url;
+    m['favourite'] = favourite;
+    return m;
+  }
+}
+
+class BaseLayoutList {
+  List<BaseLayoutItem> items;
+  BaseLayoutList() {
+    items = new List();
+  }
+
+  toJSONEncodable() {
+    return items.map((item) {
+      return item.toJSONEncodable();
+    }).toList();
+  }
 }
 
 class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
@@ -30,6 +59,8 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     "Town Hall 8",
     "Town Hall 7",
   ];
+  final LocalStorage localStorage = new LocalStorage('favourities');
+  final BaseLayoutList list = new BaseLayoutList();
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +122,6 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
   }
 
   Widget baseList(context, String type, String th) {
-    print(db.collection("bases/" + th + "/" + type).snapshots());
     return StreamBuilder<QuerySnapshot>(
       stream: db.collection("bases/" + th + "/" + type).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -101,8 +131,29 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
-                return BaseLayoutCard(document.data['link'],
-                    document.data['favourite'], document.data['download_url']);
+                var fabs =
+                    localStorage.getItem("favourities");
+                
+                bool favourite = false;
+                Map<dynamic,dynamic> checkfav= new Map();
+                checkfav['url'] = document.data['link'];
+                checkfav['download_url'] = document.data['download_url'];
+                checkfav['favourite'] = true;
+                
+                if (fabs != null) {
+                  for(int i=0;i<fabs.length;i++){
+                  if(fabs[i]['url']==checkfav['url'] && fabs[i]['download_url']==checkfav['download_url'] && fabs[i]['favourite']==checkfav['favourite']){
+                    favourite = true;
+                    break;
+                  }
+                }
+                }
+                
+                BaseLayoutItem item = new BaseLayoutItem();
+                item.url = document.data['link'];
+                item.download_url = document.data['download_url'];
+                item.favourite = favourite;
+                return BaseLayoutCard(item);
               }).toList(),
             );
           } else {
@@ -155,7 +206,25 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     );
   }
 
-  Widget BaseLayoutCard(String link, bool favourite, String download_url) {
+  _addItem(BaseLayoutItem item) {
+    setState(() {
+      list.items.add(item);
+      _saveToStorage();
+    });
+  }
+
+  _removeItem(BaseLayoutItem item) {
+    setState(() {
+      list.items.remove(item);
+      _saveToStorage();
+    });
+  }
+
+  _saveToStorage() {
+    localStorage.setItem('favourities', list.toJSONEncodable());
+  }
+
+  Widget BaseLayoutCard(BaseLayoutItem item) {
     return Container(
         width: 400,
         height: 250,
@@ -164,16 +233,30 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
           children: <Widget>[
             new Positioned.fill(
                 child: Image.network(
-              link,
+              item.url,
               fit: BoxFit.cover,
             )),
             Positioned(
                 top: 210,
                 left: 10,
                 child: GestureDetector(
-                    onTap: () {},
+                    onTap: item.favourite == false
+                        ? () {
+                            item.favourite = !item.favourite;
+                            _addItem(item);
+                            // _setFavourite(item);
+                            setState(() {
+                              
+                            });
+                          }
+                        : () {
+                            _removeItem(item);
+                            setState(() {
+                              item.favourite = !item.favourite;
+                            });
+                          },
                     child: Icon(Icons.favorite,
-                        color: favourite == false
+                        color: item.favourite == false
                             ? Colors.white
                             : Colors.pink[300]))),
             Positioned(
@@ -181,7 +264,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
               left: 350,
               child: GestureDetector(
                 onTap: () {
-                  Share.share("text");
+                  Share.share(item.download_url.toString());
                 },
                 child: Icon(
                   Icons.share,
@@ -194,7 +277,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 left: 350,
                 child: GestureDetector(
                     onTap: () {
-                      _launchURL(download_url);
+                      _launchURL(item.download_url);
                     },
                     child: Icon(Icons.file_download, color: Colors.white)))
           ],
@@ -202,7 +285,6 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
   }
 
   _launchURL(String copy_url) async {
-    print(copy_url);
     String url = copy_url;
     if (await canLaunch(url)) {
       await launch(url);

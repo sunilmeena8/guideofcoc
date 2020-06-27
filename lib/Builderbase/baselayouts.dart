@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,6 +28,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
     "Builder Hall 6",
     "Builder Hall 5",
   ];
+  final LocalStorage localStorage = new LocalStorage('favourities');
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,15 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
-                return BaseLayoutCard(document.data['link'],document.data['favourite'],document.data['download_url']);
+                    bool fav = localStorage.getItem(document.data['download_url']);
+                
+                bool favourite = false;
+                if (fav is Null || fav == false) {
+                  favourite = false;
+                } else {
+                  favourite = true;
+                }
+                return BaseLayoutCard(document.data['link'],favourite,document.data['download_url']);
               }).toList(),
             );
           } else {
@@ -140,7 +150,19 @@ Widget BaseLayoutCard(String link, bool favourite, String download_url) {
                 top: 210,
                 left: 10,
                 child: GestureDetector(
-                    onTap: () {},
+                    onTap: favourite == false
+                        ? () {
+                            // _setFavourite(download_url);
+                            // setState(() {
+                            //   favourite = !favourite;
+                            // });
+                          }
+                        : () {
+                            // _removeFavourite(download_url);
+                            // setState(() {
+                            //   favourite = !favourite;
+                            // });
+                          },
                     child: Icon(Icons.favorite,
                         color: favourite == false
                             ? Colors.white
@@ -150,7 +172,7 @@ Widget BaseLayoutCard(String link, bool favourite, String download_url) {
               left: 350,
               child: GestureDetector(
                 onTap: () {
-                  Share.share(download_url);
+                  Share.share(download_url.toString());
                 },
                 child: Icon(
                   Icons.share,
@@ -171,7 +193,6 @@ Widget BaseLayoutCard(String link, bool favourite, String download_url) {
   }
 
   _launchURL(String copy_url) async {
-    print(copy_url);
     String url = copy_url;
     if (await canLaunch(url)) {
       await launch(url);
