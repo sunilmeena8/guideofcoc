@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:guideofcoc/favourities.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
-import 'package:localstorage/localstorage.dart';
 
 class HomeBaseBaseLayouts extends StatefulWidget {
   @override
@@ -14,28 +16,11 @@ class BaseLayoutItem {
   String url;
   String download_url;
   bool favourite;
-  BaseLayoutItem({this.url, this.download_url, this.favourite});
-  toJSONEncodable() {
-    Map<String, dynamic> m = new Map();
-
-    m['url'] = url;
-    m['download_url'] = download_url;
-    m['favourite'] = favourite;
-    return m;
-  }
-}
-
-class BaseLayoutList {
-  List<BaseLayoutItem> items;
-  BaseLayoutList() {
-    items = new List();
-  }
-
-  toJSONEncodable() {
-    return items.map((item) {
-      return item.toJSONEncodable();
-    }).toList();
-  }
+  BaseLayoutItem({
+    this.url,
+    this.download_url,
+    this.favourite,
+  });
 }
 
 class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
@@ -59,8 +44,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     "Town Hall 8",
     "Town Hall 7",
   ];
-  final LocalStorage localStorage = new LocalStorage('favourities');
-  final BaseLayoutList list = new BaseLayoutList();
+  static bool favourite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -131,28 +115,13 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
-                var fabs =
-                    localStorage.getItem("favourities");
-                
-                bool favourite = false;
-                Map<dynamic,dynamic> checkfav= new Map();
-                checkfav['url'] = document.data['link'];
-                checkfav['download_url'] = document.data['download_url'];
-                checkfav['favourite'] = true;
-                
-                if (fabs != null) {
-                  for(int i=0;i<fabs.length;i++){
-                  if(fabs[i]['url']==checkfav['url'] && fabs[i]['download_url']==checkfav['download_url'] && fabs[i]['favourite']==checkfav['favourite']){
-                    favourite = true;
-                    break;
-                  }
-                }
-                }
-                
                 BaseLayoutItem item = new BaseLayoutItem();
                 item.url = document.data['link'];
                 item.download_url = document.data['download_url'];
+                getAllFav(item);
+                getFav(item);
                 item.favourite = favourite;
+
                 return BaseLayoutCard(item);
               }).toList(),
             );
@@ -206,22 +175,38 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     );
   }
 
-  _addItem(BaseLayoutItem item) {
-    setState(() {
-      list.items.add(item);
-      _saveToStorage();
-    });
+  getAllFav(BaseLayoutItem item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var allEntries = prefs.getKeys();
+    print(allEntries);
   }
 
-  _removeItem(BaseLayoutItem item) {
-    setState(() {
-      list.items.remove(item);
-      _saveToStorage();
-    });
+  addFav(BaseLayoutItem item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString(item.download_url, item.download_url + ";" + item.url);
   }
 
-  _saveToStorage() {
-    localStorage.setItem('favourities', list.toJSONEncodable());
+  getFav(BaseLayoutItem item) async {
+    var fab = await getFavFromSF(item);
+    if (fab == null) {
+      favourite = false;
+    } else {
+      favourite = true;
+    }
+  }
+
+  getFavFromSF(BaseLayoutItem item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
+    String stringValue = prefs.getString(item.download_url);
+    return stringValue;
+  }
+
+  removeFav(BaseLayoutItem item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.remove(item.download_url);
   }
 
   Widget BaseLayoutCard(BaseLayoutItem item) {
@@ -242,18 +227,13 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 child: GestureDetector(
                     onTap: item.favourite == false
                         ? () {
-                            item.favourite = !item.favourite;
-                            _addItem(item);
-                            // _setFavourite(item);
-                            setState(() {
-                              
-                            });
+                            addFav(item);
+                            setState(() {});
                           }
                         : () {
-                            _removeItem(item);
-                            setState(() {
-                              item.favourite = !item.favourite;
-                            });
+                            removeFav(item);
+
+                            setState(() {});
                           },
                     child: Icon(Icons.favorite,
                         color: item.favourite == false

@@ -1,12 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:localstorage/localstorage.dart';
+import 'package:guideofcoc/favourities.dart';
 import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BuilderBaseBaseLayouts extends StatefulWidget {
   @override
   _BuilderBaseBaseLayoutsState createState() => _BuilderBaseBaseLayoutsState();
+}
+
+class BaseLayoutItem {
+  String url;
+  String download_url;
+  bool favourite;
+  BaseLayoutItem({this.url, this.download_url, this.favourite});
+  toJSONEncodable() {
+    Map<String, dynamic> m = new Map();
+
+    m['url'] = url;
+    m['download_url'] = download_url;
+    m['favourite'] = favourite;
+    return m;
+  }
+}
+
+class BaseLayoutList {
+  List<BaseLayoutItem> items;
+  BaseLayoutList() {
+    items = new List();
+  }
+
+  toJSONEncodable() {
+    return items.map((item) {
+      return item.toJSONEncodable();
+    }).toList();
+  }
 }
 
 class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
@@ -28,8 +57,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
     "Builder Hall 6",
     "Builder Hall 5",
   ];
-  final LocalStorage localStorage = new LocalStorage('favourities');
-
+  static bool favourite = false;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -37,24 +65,37 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
       child: Scaffold(
           appBar: AppBar(
             title: new Theme(
-              child: new DropdownButtonHideUnderline(
-                child: new DropdownButton<String>(
-                  dropdownColor: Colors.blue[300],
-                  value: _bhvalue,
-                  items: nameList.map(
-                    (item) {
-                      return DropdownMenuItem(
-                        value: item,
-                        child: Text(
-                          item,
-                        ),
-                      );
-                    },
-                  ).toList(),
-                  onChanged: (String value) {
-                    setState(() => _bhvalue = value);
-                  },
-                ),
+              child: Row(
+                children: <Widget>[
+                  new DropdownButtonHideUnderline(
+                    child: new DropdownButton<String>(
+                      dropdownColor: Colors.blue[300],
+                      value: _bhvalue,
+                      items: nameList.map(
+                        (item) {
+                          return DropdownMenuItem(
+                            value: item,
+                            child: Text(
+                              item,
+                            ),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (String value) {
+                        setState(() => _bhvalue = value);
+                      },
+                    ),
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Favourities()),
+                        );
+                      },
+                      child: Icon(Icons.favorite)),
+                ],
               ),
               data: new ThemeData.dark(),
             ),
@@ -73,15 +114,13 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
-                    bool fav = localStorage.getItem(document.data['download_url']);
-                
-                bool favourite = false;
-                if (fav is Null || fav == false) {
-                  favourite = false;
-                } else {
-                  favourite = true;
-                }
-                return BaseLayoutCard(document.data['link'],favourite,document.data['download_url']);
+                BaseLayoutItem item = new BaseLayoutItem();
+                item.url = document.data['link'];
+                item.download_url = document.data['download_url'];
+                item.favourite = favourite;
+                getFav(item);
+                item.favourite = favourite;
+                return BaseLayoutCard(item);
               }).toList(),
             );
           } else {
@@ -134,7 +173,35 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
     );
   }
 
-Widget BaseLayoutCard(String link, bool favourite, String download_url) {
+  addFav(BaseLayoutItem item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString(item.download_url, item.download_url + ";" + item.url);
+  }
+
+  getFav(BaseLayoutItem item) async {
+    var fab = await getFavFromSF(item);
+    if (fab == null) {
+      favourite = false;
+    } else {
+      favourite = true;
+    }
+  }
+
+  getFavFromSF(BaseLayoutItem item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
+    String stringValue = prefs.getString(item.download_url);
+    return stringValue;
+  }
+
+  removeFav(BaseLayoutItem item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.remove(item.download_url);
+  }
+
+  Widget BaseLayoutCard(BaseLayoutItem item) {
     return Container(
         width: 400,
         height: 250,
@@ -143,28 +210,27 @@ Widget BaseLayoutCard(String link, bool favourite, String download_url) {
           children: <Widget>[
             new Positioned.fill(
                 child: Image.network(
-              link,
+              item.url,
               fit: BoxFit.cover,
             )),
             Positioned(
                 top: 210,
                 left: 10,
                 child: GestureDetector(
-                    onTap: favourite == false
+                    onTap: item.favourite == false
                         ? () {
-                            // _setFavourite(download_url);
-                            // setState(() {
-                            //   favourite = !favourite;
-                            // });
+                            item.favourite = !item.favourite;
+                            addFav(item);
+                            setState(() {});
                           }
                         : () {
-                            // _removeFavourite(download_url);
-                            // setState(() {
-                            //   favourite = !favourite;
-                            // });
+                            removeFav(item);
+                            setState(() {
+                              item.favourite = !item.favourite;
+                            });
                           },
                     child: Icon(Icons.favorite,
-                        color: favourite == false
+                        color: item.favourite == false
                             ? Colors.white
                             : Colors.pink[300]))),
             Positioned(
@@ -172,7 +238,7 @@ Widget BaseLayoutCard(String link, bool favourite, String download_url) {
               left: 350,
               child: GestureDetector(
                 onTap: () {
-                  Share.share(download_url.toString());
+                  Share.share(item.download_url.toString());
                 },
                 child: Icon(
                   Icons.share,
@@ -185,7 +251,7 @@ Widget BaseLayoutCard(String link, bool favourite, String download_url) {
                 left: 350,
                 child: GestureDetector(
                     onTap: () {
-                      _launchURL(download_url);
+                      _launchURL(item.download_url.toString());
                     },
                     child: Icon(Icons.file_download, color: Colors.white)))
           ],

@@ -6,92 +6,53 @@ class HomeBaseAttackStrategy extends StatefulWidget {
   _HomeBaseAttackStrategyState createState() => _HomeBaseAttackStrategyState();
 }
 
-class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy>
-    with SingleTickerProviderStateMixin {
- 
-   bool isOpened = false;
-  AnimationController _animationController;
-  Animation<Color> _buttonColor;
-  Animation<double> _animateIcon;
-  Animation<double> _translateButton;
-  Curve _curve = Curves.easeOut;
-  double _fabHeight = 56.0;
-
-    String dropdownValue = 'One';
-
-
-  @override
-  initState() {
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
-          ..addListener(() {
-            setState(() {});
-          });
-    _animateIcon =
-        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
-    _buttonColor = ColorTween(
-      begin: Colors.blue,
-      end: Colors.red,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Interval(
-        0.00,
-        1.00,
-        curve: Curves.linear,
-      ),
-    ));
-    _translateButton = Tween<double>(
-      begin: _fabHeight,
-      end: -14.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Interval(
-        0.0,
-        0.75,
-        curve: _curve,
-      ),
-    ));
-    super.initState();
-  }
-
-  @override
-  dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  animate() {
-    if (!isOpened) {
-      _animationController.forward();
-    } else {
-      _animationController.reverse();
-    }
-    isOpened = !isOpened;
-  }
-
-  Widget toggle() {
-    return FloatingActionButton.extended(
-      onPressed: null, 
-      icon: Icon(Icons.add),
-      label: Text("data"),
-    );
-  }
+class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy>{
 
   @override
   Widget build(BuildContext context) {
-    final title = 'Attack Strategy';
-    var hallno = [13, 12, 11, 10, 9, 8, 7, 6];
-
+  var title = 'Attack Strategy Videos';
+  String _thvalue = "Town Hall 12";
+  var nameList = [
+    "Town Hall 13",
+    "Town Hall 12",
+    "Town Hall 11",
+    "Town Hall 10",
+    "Town Hall 9",
+    "Town Hall 8",
+    "Town Hall 7",
+  ];
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
-      ),
-      floatingActionButton:   Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        toggle(),
-      ],
-    ),
+            title: new Theme(
+              child: Row(
+                children: <Widget>[
+                  new DropdownButtonHideUnderline(
+                    child: new DropdownButton<String>(
+                      dropdownColor: Colors.blue[300],
+                      value: _thvalue,
+                      items: nameList.map(
+                        (item) {
+                          return DropdownMenuItem(
+                            value: item,
+                            child: Text(
+                              item,
+                            ),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (String value) {
+                        setState(() => _thvalue = value);
+                      },
+                    ),
+                  ),
+                  
+                ],
+              ),
+              data: new ThemeData.dark(),
+            ),
+          ),
+          body: Text("data"), 
+      
     );
   }
 }

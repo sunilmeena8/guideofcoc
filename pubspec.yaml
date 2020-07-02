@@ -15,8 +15,7 @@ dependencies:
   adobe_xd: ^0.1.0
   cloud_firestore: ^0.13.7
   share: ^0.6.4+3
-  localstorage: ^3.0.2+5
-
+  shared_preferences: ^0.5.7+3
 
 
 dev_dependencies:
