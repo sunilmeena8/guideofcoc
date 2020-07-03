@@ -104,7 +104,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
     );
   }
 
-  Widget baseList(context, String type) {
+  Widget baseList(context, String _bhvalue) {
     return StreamBuilder<QuerySnapshot>(
       stream: db.collection("builder base/bases/" + _bhvalue).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
