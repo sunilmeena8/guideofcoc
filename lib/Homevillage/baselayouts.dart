@@ -51,7 +51,16 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        floatingActionButton: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Favourities()),
+                      );
+                    },
+                    child: Icon(Icons.favorite,color: Colors.pink[200])),
         appBar: new AppBar(
+          backgroundColor: const Color(0xff000000),
           title: new Theme(
             child: Row(
               children: <Widget>[
@@ -74,15 +83,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                     },
                   ),
                 ),
-                GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Favourities()),
-                      );
-                    },
-                    child: Icon(Icons.favorite)),
-              ],
+                ],
             ),
             data: new ThemeData.dark(),
           ),

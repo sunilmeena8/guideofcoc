@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 
 class HomeBaseAttackStrategy extends StatefulWidget {
   @override
@@ -32,6 +29,7 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xff000000),
         title: new Theme(
           child: Row(
             children: <Widget>[
@@ -66,7 +64,7 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
   @override
   void initState() {
     super.initState();
-    
+
     _videoMetaData = const YoutubeMetaData();
     _playerState = PlayerState.unknown;
   }
@@ -79,7 +77,6 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
       });
     }
   }
-
 
   void setController(String url) {
     String videoId;
@@ -166,25 +163,19 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
   Widget AttackVideoCard(String url) {
     setController(url);
     // while(_isPlayerReady==false);
-    return 
-    Container(
+    return Container(
       padding: EdgeInsets.only(bottom: 20),
       child: YoutubePlayerBuilder(
-        onExitFullScreen: () {
-          // The player forces portraitUp after exiting fullscreen. This overrides the behaviour.
-          SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-        },
+        
         player: YoutubePlayer(
           controller: _controller,
           showVideoProgressIndicator: true,
           progressIndicatorColor: Colors.amberAccent,
-          
           bottomActions: <Widget>[
             CurrentPosition(),
-      ProgressBar(isExpanded: true),
-      PlaybackSpeedButton(),
-      FullScreenButton(),
-
+            ProgressBar(isExpanded: true),
+            PlaybackSpeedButton(),
+            FullScreenButton(),
           ],
           topActions: <Widget>[
             const SizedBox(width: 8.0),
@@ -198,16 +189,6 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.white,
-                size: 25.0,
-              ),
-              onPressed: () {
-                log('Settings Tapped!');
-              },
             ),
           ],
           onReady: () {
