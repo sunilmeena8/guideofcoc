@@ -106,7 +106,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
 
   Widget baseList(context, String _bhvalue) {
     return StreamBuilder<QuerySnapshot>(
-      stream: db.collection("builder base/bases/" + _bhvalue).snapshots(),
+      stream: db.collection("bases/builder base/" + _bhvalue).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.documents.length > 0) {
@@ -115,7 +115,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
                 BaseLayoutItem item = new BaseLayoutItem();
-                item.url = document.data['link'];
+                item.url = document.data['url'];
                 item.download_url = document.data['download_url'];
                 item.favourite = favourite;
                 getFav(item);

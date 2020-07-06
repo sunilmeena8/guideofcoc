@@ -1,11 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:guideofcoc/Builderbase/attackstrategy.dart';
 import 'package:guideofcoc/Builderbase/baselayouts.dart';
 import 'package:guideofcoc/Homevillage/attackstrategy.dart';
 import 'package:guideofcoc/Homevillage/baselayouts.dart';
+import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -23,31 +26,85 @@ class _HomeState extends State<Home> {
     'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-sneaky-goblin-01.533x300q50.jpg',
   ];
   CarouselSlider topSlider;
+  var popupChoices = [
+    "Share",
+    "Rate Us",
+    "Privacy and Policy",
+    "Contact Us",
+  ];
+  var popupUrls = [
+    "Hey Clashers i have an amzing app for you, Pls Download..  https://play.google.com/store/apps/details?id=guide.coc.guidecoc",
+    "https://play.google.com/store/apps/details?id=com.tencent.iglite",
+    "",
+    "mailto:sunil98meena@gmail.com?subject= Help and Support",
+  ];
+  final Firestore db = Firestore.instance;
 
   @override
   void initState() {
-    topSlider = CarouselSlider(
-      viewportFraction: 0.9,
-      aspectRatio: 2.0,
-      autoPlay: true,
-      enlargeCenterPage: true,
-      items: imgList.map(
-        (url) {
-          return Container(
-            margin: EdgeInsets.all(5.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              child: Image.network(
-                url,
-                fit: BoxFit.cover,
-                width: double.maxFinite,
-              ),
-            ),
-          );
-        },
-      ).toList(),
-    );
     super.initState();
+  }
+
+  Future<String> getFromSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
+    String stringValue = prefs.getString("updates");
+    // updates=stringValue.split(" ");
+    return stringValue;
+  }
+
+  void handleClick(String value) {
+    switch (value) {
+      case 'Share':
+        Share.share(popupUrls[popupChoices.indexOf(value)]);
+        break;
+      case "Contact Us":
+        launch_url(popupUrls[popupChoices.indexOf(value)]);
+        break;
+      case "Rate Us":
+        launch_url(popupUrls[popupChoices.indexOf(value)]);
+        break;
+    }
+  }
+
+  getSlider() {
+    return FutureBuilder<String>(
+        future: getFromSF(),
+        builder: (context, res) {
+          if (res.connectionState == ConnectionState.none && res.data == null) {
+            //print('project snapshot data is: ${projectSnap.data}');
+            return Container();
+          } else {
+            return (CarouselSlider(
+              viewportFraction: 0.9,
+              aspectRatio: 2.0,
+              autoPlay: true,
+              enlargeCenterPage: true,
+              items: res.data.split(" ").map(
+                (urls) {
+                  
+                  var imgUrl,pageUrl;
+                  imgUrl = urls.split(";")[0];
+                  pageUrl = urls.split(";")[1];
+                  return GestureDetector(
+                    onTap: (){launch_url(pageUrl);},
+                    child: Container(
+                      margin: EdgeInsets.all(5.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        child: Image.network(
+                          imgUrl,
+                          fit: BoxFit.cover,
+                          width: double.maxFinite,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ).toList(),
+            ));
+          }
+        });
   }
 
   @override
@@ -67,18 +124,24 @@ class _HomeState extends State<Home> {
           textAlign: TextAlign.left,
         ),
         actions: <Widget>[
-          GestureDetector(
-            onTap: () {},
-            child: Icon(
-              Icons.more_vert,
-              color: Colors.black,
-            ),
-          )
+          PopupMenuButton<String>(
+            icon: Icon(Icons.more_vert, color: Colors.black),
+            onSelected: handleClick,
+            itemBuilder: (BuildContext context) {
+              return popupChoices.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
         ],
       ),
       body: ListView(
         children: <Widget>[
-          Container(margin: EdgeInsets.only(top: 10), child: topSlider),
+          getSlider(),
+          // updates.length==0?Text("Loading..."):Container(margin: EdgeInsets.only(top: 10), child: topSlider),
           Container(
             margin: EdgeInsets.only(top: 10, bottom: 5, left: 10),
             child: Text(
@@ -124,7 +187,6 @@ class _HomeState extends State<Home> {
                           ],
                         ),
                       ),
-                     
                       Positioned(
                         bottom: 4,
                         left: 5,
@@ -410,6 +472,14 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
+  }
+
+  launch_url(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
 

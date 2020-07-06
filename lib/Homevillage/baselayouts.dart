@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:guideofcoc/favourities.dart';
@@ -51,14 +49,21 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-        floatingActionButton: GestureDetector(
-                    onTap: () {
+        floatingActionButton: new SizedBox(
+   height: 18.0,
+   width: 18.0,
+   child: new IconButton(
+      padding: new EdgeInsets.only(bottom:20.0),
+      color: Colors.pink[200],
+      icon: new Icon(Icons.favorite, size: 30.0),
+      onPressed:  () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Favourities()),
                       );
                     },
-                    child: Icon(Icons.favorite,color: Colors.pink[200])),
+   )
+),
         appBar: new AppBar(
           backgroundColor: const Color(0xff000000),
           title: new Theme(
@@ -98,9 +103,9 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
         ),
         body: TabBarView(children: <Widget>[
           baseList(context, "war", _thvalue),
-          baseList(context, "TROPHY", _thvalue),
-          baseList(context, "HYBRID", _thvalue),
-          baseList(context, "FARMING", _thvalue),
+          baseList(context, "trophy", _thvalue),
+          baseList(context, "hybrid", _thvalue),
+          baseList(context, "farming", _thvalue),
         ]),
       ),
     );
@@ -108,7 +113,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
 
   Widget baseList(context, String type, String th) {
     return StreamBuilder<QuerySnapshot>(
-      stream: db.collection("bases/" + th + "/" + type).snapshots(),
+      stream: db.collection("bases/home village/" + th + "/" + type+"/bases").snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.documents.length > 0) {
@@ -117,7 +122,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
                 BaseLayoutItem item = new BaseLayoutItem();
-                item.url = document.data['link'];
+                item.url = document.data['url'];
                 item.download_url = document.data['download_url'];
                 getAllFav(item);
                 getFav(item);
@@ -179,7 +184,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
   getAllFav(BaseLayoutItem item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var allEntries = prefs.getKeys();
-    print(allEntries);
+    // print(allEntries);
   }
 
   addFav(BaseLayoutItem item) async {
