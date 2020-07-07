@@ -28,7 +28,7 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff000000),
+        backgroundColor: const Color(0xff121212),
         title: new Theme(
           child: Row(
             children: <Widget>[

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:guideofcoc/favourities.dart';
 import 'package:guideofcoc/services.dart';
+import 'package:guideofcoc/utils/fav_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
@@ -36,15 +37,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
 
   final Firestore db = Firestore.instance;
   String _thvalue = thList[0];
-  var nameList = [
-    "Town Hall 13",
-    "Town Hall 12",
-    "Town Hall 11",
-    "Town Hall 10",
-    "Town Hall 9",
-    "Town Hall 8",
-    "Town Hall 7",
-  ];
+
   static bool favourite = false;
 
   @override
@@ -59,7 +52,9 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Favourities()),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Favourities("home village favourities")),
               );
             },
             child: Icon(
@@ -131,7 +126,8 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 item.favourite = favourite;
                 String documentId = document.documentID;
                 return FutureBuilder(
-                    future: getFav(documentId),
+                    future:
+                        FavUtils.getFav(documentId, "home village favourities"),
                     builder: (context, favourite) {
                       item.favourite = favourite.data;
                       return BaseLayoutCard(item, documentId);
@@ -188,55 +184,6 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     );
   }
 
-  getThs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString("town halls");
-    return stringValue.split(";");
-  }
-
- 
-
-  addFav(String id, BaseLayoutItem item) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String fabString = prefs.getString("favourities");
-    
-    if(fabString==null){
-      Map<String,String> map = new Map<String,String>();
-      map[id] = item.url+";"+item.download_url;
-      String jsonFormat  = jsonEncode(map);
-      prefs.setString("favourities", jsonFormat);
-    
-    }
-    else{
-      var fabs = jsonDecode(fabString);
-      fabs[id] = item.url+";"+item.download_url;
-      String jsonFormat  = jsonEncode(fabs);
-      prefs.setString("favourities", jsonFormat);
-    }
-    
-  }
-
-  Future<bool> getFav(String id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String fabString = prefs.get("favourities");
-    Map<String,dynamic>map = jsonDecode(fabString);
-    if(map.containsKey(id)){
-      return(true);
-    }
-    else{
-      return(false);
-    }
-  }
-
-  removeFav(String id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String fabString = prefs.getString("favourities");
-    Map<String,dynamic> fabs = jsonDecode(fabString);
-    fabs.remove(id);
-    fabString = jsonEncode(fabs);
-    prefs.setString("favourities", fabString);
-  }
-
   Widget BaseLayoutCard(BaseLayoutItem item, String documentId) {
     return Container(
         width: 400,
@@ -255,9 +202,13 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 child: GestureDetector(
                     onTap: () {
                       if (item.favourite == false) {
-                        addFav(documentId, item);
+                        FavUtils.addFav(
+                            documentId,
+                            item.url + ";" + item.download_url,
+                            "home village favourities");
                       } else {
-                        removeFav(documentId);
+                        FavUtils.removeFav(
+                            documentId, "home village favourities");
                       }
                       setState(() {});
                     },

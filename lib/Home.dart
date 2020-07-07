@@ -98,20 +98,20 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: const Color(0xffeff5f4),
       appBar: AppBar(
-        backgroundColor: Color(0xa0EFF5F4),
+        backgroundColor: Color(0xff121212),
         title: Text(
           'COC Guide',
           style: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 24,
-            color: const Color(0xff000000),
+            color: const Color(0xffffffff),
             fontWeight: FontWeight.w700,
           ),
           textAlign: TextAlign.left,
         ),
         actions: <Widget>[
           PopupMenuButton<String>(
-            icon: Icon(Icons.more_vert, color: Colors.black),
+            icon: Icon(Icons.more_vert, color: Colors.white),
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
               return popupChoices.map((String choice) {

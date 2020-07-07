@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:guideofcoc/favourities.dart';
 import 'package:guideofcoc/services.dart';
+import 'package:guideofcoc/utils/fav_utils.dart';
 import 'package:share/share.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class BuilderBaseBaseLayouts extends StatefulWidget {
@@ -58,18 +58,20 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
       length: 4,
       child: Scaffold(
           floatingActionButton: FloatingActionButton(
-            elevation: 10.0,
-            backgroundColor: Colors.deepOrange,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Favourities()),
-              );
-            },
-            child: Icon(
-              Icons.favorite,
-              size: 30.0,
-            )),
+              elevation: 10.0,
+              backgroundColor: Colors.deepOrange,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Favourities("builder base favourities")),
+                );
+              },
+              child: Icon(
+                Icons.favorite,
+                size: 30.0,
+              )),
           appBar: AppBar(
             backgroundColor: const Color(0xff000000),
             title: new Theme(
@@ -119,7 +121,8 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                 item.favourite = favourite;
                 String documentId = document.documentID;
                 return FutureBuilder(
-                    future: getFav(documentId),
+                    future:
+                        FavUtils.getFav(documentId, "builder base favourities"),
                     builder: (context, favourite) {
                       item.favourite = favourite.data;
                       return BaseLayoutCard(item, documentId);
@@ -176,33 +179,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
     );
   }
 
-  addFav(String id, BaseLayoutItem item) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(id + ";" + _bhvalue, item.download_url + ";" + item.url);
-    print(prefs.getKeys());
-  }
-
-  Future<bool> getFav(String id) async {
-    var fab = await getFavFromSF(id);
-    if (fab == null) {
-      return (false);
-    } else {
-      return (true);
-    }
-  }
-
-  getFavFromSF(String id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString(id + ";" + _bhvalue);
-    return stringValue;
-  }
-
-  removeFav(String id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove(id + ";" + _bhvalue);
-  }
-
-  Widget BaseLayoutCard(BaseLayoutItem item,String id) {
+  Widget BaseLayoutCard(BaseLayoutItem item, String id) {
     return Container(
         width: 400,
         height: 250,
@@ -221,11 +198,14 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                     onTap: item.favourite == false
                         ? () {
                             item.favourite = !item.favourite;
-                            addFav(id,item);
+                            FavUtils.addFav(
+                                id,
+                                item.url + ";" + item.download_url,
+                                "builder base favourities");
                             setState(() {});
                           }
                         : () {
-                            removeFav(id);
+                            FavUtils.removeFav(id, "builder base favourities");
                             setState(() {
                               item.favourite = !item.favourite;
                             });
