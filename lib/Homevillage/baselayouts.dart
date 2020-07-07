@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:guideofcoc/favourities.dart';
+import 'package:guideofcoc/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
@@ -32,7 +35,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
   ];
 
   final Firestore db = Firestore.instance;
-  String _thvalue = "Town Hall 13";
+  String _thvalue = thList[0];
   var nameList = [
     "Town Hall 13",
     "Town Hall 12",
@@ -46,24 +49,23 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
 
   @override
   Widget build(BuildContext context) {
+    // getThs();
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-        floatingActionButton: new SizedBox(
-   height: 18.0,
-   width: 18.0,
-   child: new IconButton(
-      padding: new EdgeInsets.only(bottom:20.0),
-      color: Colors.pink[200],
-      icon: new Icon(Icons.favorite, size: 30.0),
-      onPressed:  () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Favourities()),
-                      );
-                    },
-   )
-),
+        floatingActionButton: FloatingActionButton(
+            elevation: 10.0,
+            backgroundColor: Colors.deepOrange,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Favourities()),
+              );
+            },
+            child: Icon(
+              Icons.favorite,
+              size: 30.0,
+            )),
         appBar: new AppBar(
           backgroundColor: const Color(0xff000000),
           title: new Theme(
@@ -73,7 +75,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                   child: new DropdownButton<String>(
                     dropdownColor: Colors.blue[300],
                     value: _thvalue,
-                    items: nameList.map(
+                    items: thList.map(
                       (item) {
                         return DropdownMenuItem(
                           value: item,
@@ -88,7 +90,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                     },
                   ),
                 ),
-                ],
+              ],
             ),
             data: new ThemeData.dark(),
           ),
@@ -113,7 +115,9 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
 
   Widget baseList(context, String type, String th) {
     return StreamBuilder<QuerySnapshot>(
-      stream: db.collection("bases/home village/" + th + "/" + type+"/bases").snapshots(),
+      stream: db
+          .collection("bases/home village/" + th + "/" + type + "/bases")
+          .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.documents.length > 0) {
@@ -124,11 +128,14 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 BaseLayoutItem item = new BaseLayoutItem();
                 item.url = document.data['url'];
                 item.download_url = document.data['download_url'];
-                getAllFav(item);
-                getFav(item);
                 item.favourite = favourite;
-
-                return BaseLayoutCard(item);
+                String documentId = document.documentID;
+                return FutureBuilder(
+                    future: getFav(documentId),
+                    builder: (context, favourite) {
+                      item.favourite = favourite.data;
+                      return BaseLayoutCard(item, documentId);
+                    });
               }).toList(),
             );
           } else {
@@ -181,41 +188,56 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     );
   }
 
-  getAllFav(BaseLayoutItem item) async {
+  getThs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var allEntries = prefs.getKeys();
-    // print(allEntries);
+    String stringValue = prefs.getString("town halls");
+    return stringValue.split(";");
   }
 
-  addFav(BaseLayoutItem item) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+ 
 
-    prefs.setString(item.download_url, item.download_url + ";" + item.url);
+  addFav(String id, BaseLayoutItem item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String fabString = prefs.getString("favourities");
+    
+    if(fabString==null){
+      Map<String,String> map = new Map<String,String>();
+      map[id] = item.url+";"+item.download_url;
+      String jsonFormat  = jsonEncode(map);
+      prefs.setString("favourities", jsonFormat);
+    
+    }
+    else{
+      var fabs = jsonDecode(fabString);
+      fabs[id] = item.url+";"+item.download_url;
+      String jsonFormat  = jsonEncode(fabs);
+      prefs.setString("favourities", jsonFormat);
+    }
+    
   }
 
-  getFav(BaseLayoutItem item) async {
-    var fab = await getFavFromSF(item);
-    if (fab == null) {
-      favourite = false;
-    } else {
-      favourite = true;
+  Future<bool> getFav(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String fabString = prefs.get("favourities");
+    Map<String,dynamic>map = jsonDecode(fabString);
+    if(map.containsKey(id)){
+      return(true);
+    }
+    else{
+      return(false);
     }
   }
 
-  getFavFromSF(BaseLayoutItem item) async {
+  removeFav(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //Return String
-    String stringValue = prefs.getString(item.download_url);
-    return stringValue;
+    String fabString = prefs.getString("favourities");
+    Map<String,dynamic> fabs = jsonDecode(fabString);
+    fabs.remove(id);
+    fabString = jsonEncode(fabs);
+    prefs.setString("favourities", fabString);
   }
 
-  removeFav(BaseLayoutItem item) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    prefs.remove(item.download_url);
-  }
-
-  Widget BaseLayoutCard(BaseLayoutItem item) {
+  Widget BaseLayoutCard(BaseLayoutItem item, String documentId) {
     return Container(
         width: 400,
         height: 250,
@@ -231,16 +253,14 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 top: 210,
                 left: 10,
                 child: GestureDetector(
-                    onTap: item.favourite == false
-                        ? () {
-                            addFav(item);
-                            setState(() {});
-                          }
-                        : () {
-                            removeFav(item);
-
-                            setState(() {});
-                          },
+                    onTap: () {
+                      if (item.favourite == false) {
+                        addFav(documentId, item);
+                      } else {
+                        removeFav(documentId);
+                      }
+                      setState(() {});
+                    },
                     child: Icon(Icons.favorite,
                         color: item.favourite == false
                             ? Colors.white

@@ -6,6 +6,7 @@ import 'package:guideofcoc/Builderbase/attackstrategy.dart';
 import 'package:guideofcoc/Builderbase/baselayouts.dart';
 import 'package:guideofcoc/Homevillage/attackstrategy.dart';
 import 'package:guideofcoc/Homevillage/baselayouts.dart';
+import 'package:guideofcoc/services.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,15 +17,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<String> imgList = [
-    'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-super-troops.547x300q50.jpg',
-    'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-super-giant-00.533x300q50.jpg',
-    'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-sneaky-goblin-01.533x300q50.jpg',
-    'https://houseofclashers.com/r/clash-of-clans/images/resize/super-barbarian-02.533x300q50.jpg',
-    'https://houseofclashers.com/r/clash-of-clans/images/resize/sneak_peeks.549x300q50.jpg',
-    'https://houseofclashers.com/r/clash-of-clans/images/resize/clangames.574x300q50.jpg',
-    'https://houseofclashers.com/r/clash-of-clans/images/resize/2020-03-sneaky-goblin-01.533x300q50.jpg',
-  ];
+  
   CarouselSlider topSlider;
   var popupChoices = [
     "Share",
@@ -42,14 +35,13 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
+    
     super.initState();
   }
 
   Future<String> getFromSF() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //Return String
     String stringValue = prefs.getString("updates");
-    // updates=stringValue.split(" ");
     return stringValue;
   }
 
@@ -68,26 +60,21 @@ class _HomeState extends State<Home> {
   }
 
   getSlider() {
-    return FutureBuilder<String>(
-        future: getFromSF(),
-        builder: (context, res) {
-          if (res.connectionState == ConnectionState.none && res.data == null) {
-            //print('project snapshot data is: ${projectSnap.data}');
-            return Container();
-          } else {
-            return (CarouselSlider(
+    return CarouselSlider(
               viewportFraction: 0.9,
               aspectRatio: 2.0,
               autoPlay: true,
               enlargeCenterPage: true,
-              items: res.data.split(" ").map(
+              items: updatesList.map(
                 (urls) {
                   
-                  var imgUrl,pageUrl;
+                  var imgUrl, pageUrl;
                   imgUrl = urls.split(";")[0];
                   pageUrl = urls.split(";")[1];
                   return GestureDetector(
-                    onTap: (){launch_url(pageUrl);},
+                    onTap: () {
+                      launch_url(pageUrl);
+                    },
                     child: Container(
                       margin: EdgeInsets.all(5.0),
                       child: ClipRRect(
@@ -102,9 +89,8 @@ class _HomeState extends State<Home> {
                   );
                 },
               ).toList(),
-            ));
-          }
-        });
+            );
+          
   }
 
   @override

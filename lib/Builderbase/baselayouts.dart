@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:guideofcoc/favourities.dart';
+import 'package:guideofcoc/services.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -49,28 +50,26 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
   ];
 
   final Firestore db = Firestore.instance;
-  String _bhvalue = "Builder Hall 9";
-  var nameList = [
-    "Builder Hall 9",
-    "Builder Hall 8",
-    "Builder Hall 7",
-    "Builder Hall 6",
-    "Builder Hall 5",
-  ];
+  String _bhvalue = bhList[0];
   static bool favourite = false;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-          floatingActionButton: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Favourities()),
-                );
-              },
-              child: Icon(Icons.favorite,color: Colors.pink[200])),
+          floatingActionButton: FloatingActionButton(
+            elevation: 10.0,
+            backgroundColor: Colors.deepOrange,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Favourities()),
+              );
+            },
+            child: Icon(
+              Icons.favorite,
+              size: 30.0,
+            )),
           appBar: AppBar(
             backgroundColor: const Color(0xff000000),
             title: new Theme(
@@ -80,7 +79,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                     child: new DropdownButton<String>(
                       dropdownColor: Colors.blue[300],
                       value: _bhvalue,
-                      items: nameList.map(
+                      items: bhList.map(
                         (item) {
                           return DropdownMenuItem(
                             value: item,
@@ -118,9 +117,13 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                 item.url = document.data['url'];
                 item.download_url = document.data['download_url'];
                 item.favourite = favourite;
-                getFav(item);
-                item.favourite = favourite;
-                return BaseLayoutCard(item);
+                String documentId = document.documentID;
+                return FutureBuilder(
+                    future: getFav(documentId),
+                    builder: (context, favourite) {
+                      item.favourite = favourite.data;
+                      return BaseLayoutCard(item, documentId);
+                    });
               }).toList(),
             );
           } else {
@@ -173,35 +176,33 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
     );
   }
 
-  addFav(BaseLayoutItem item) async {
+  addFav(String id, BaseLayoutItem item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    prefs.setString(item.download_url, item.download_url + ";" + item.url);
+    prefs.setString(id + ";" + _bhvalue, item.download_url + ";" + item.url);
+    print(prefs.getKeys());
   }
 
-  getFav(BaseLayoutItem item) async {
-    var fab = await getFavFromSF(item);
+  Future<bool> getFav(String id) async {
+    var fab = await getFavFromSF(id);
     if (fab == null) {
-      favourite = false;
+      return (false);
     } else {
-      favourite = true;
+      return (true);
     }
   }
 
-  getFavFromSF(BaseLayoutItem item) async {
+  getFavFromSF(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //Return String
-    String stringValue = prefs.getString(item.download_url);
+    String stringValue = prefs.getString(id + ";" + _bhvalue);
     return stringValue;
   }
 
-  removeFav(BaseLayoutItem item) async {
+  removeFav(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    prefs.remove(item.download_url);
+    prefs.remove(id + ";" + _bhvalue);
   }
 
-  Widget BaseLayoutCard(BaseLayoutItem item) {
+  Widget BaseLayoutCard(BaseLayoutItem item,String id) {
     return Container(
         width: 400,
         height: 250,
@@ -220,11 +221,11 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                     onTap: item.favourite == false
                         ? () {
                             item.favourite = !item.favourite;
-                            addFav(item);
+                            addFav(id,item);
                             setState(() {});
                           }
                         : () {
-                            removeFav(item);
+                            removeFav(id);
                             setState(() {
                               item.favourite = !item.favourite;
                             });
