@@ -22,13 +22,13 @@ class _HomeState extends State<Home> {
   var popupChoices = [
     "Share",
     "Rate Us",
-    "Privacy and Policy",
+    
     "Contact Us",
   ];
   var popupUrls = [
     "Hey Clashers i have an amzing app for you, Pls Download..  https://play.google.com/store/apps/details?id=guide.coc.guidecoc",
     "https://play.google.com/store/apps/details?id=com.tencent.iglite",
-    "",
+    
     "mailto:sunil98meena@gmail.com?subject= Help and Support",
   ];
   final Firestore db = Firestore.instance;

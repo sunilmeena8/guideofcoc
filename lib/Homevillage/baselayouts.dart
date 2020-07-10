@@ -1,13 +1,12 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:guideofcoc/favourities.dart';
 import 'package:guideofcoc/services.dart';
 import 'package:guideofcoc/utils/fav_utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
+import 'package:photo_view/photo_view.dart';
 
 class HomeBaseBaseLayouts extends StatefulWidget {
   @override
@@ -191,11 +190,21 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
         margin: EdgeInsets.only(bottom: 20),
         child: Stack(
           children: <Widget>[
+            Center(child: CircularProgressIndicator()),
             new Positioned.fill(
-                child: Image.network(
-              item.url,
-              fit: BoxFit.cover,
-            )),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return DetailScreen(item.url);
+                  }));
+                },
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: item.url,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             Positioned(
                 top: 210,
                 left: 10,
@@ -248,5 +257,23 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+}
+
+class DetailScreen extends StatelessWidget {
+  final String url;
+  DetailScreen(this.url);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: (){
+          Navigator.pop(context);
+        },
+        child: PhotoView(
+          imageProvider: NetworkImage(url),
+        ),
+      ),
+    );
   }
 }
