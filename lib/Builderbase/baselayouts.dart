@@ -75,7 +75,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                 size: 30.0,
               )),
           appBar: AppBar(
-            backgroundColor: const Color(0xff000000),
+            backgroundColor: const Color(0xff272727),
             title: new Theme(
               child: Row(
                 children: <Widget>[

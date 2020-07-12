@@ -40,14 +40,21 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
   static bool favourite = false;
 
   @override
+  void initState() {
+    
+    super.initState();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     // getThs();
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        backgroundColor: Color(0xff121212),
         floatingActionButton: FloatingActionButton(
             elevation: 10.0,
-            backgroundColor: Colors.deepOrange,
             onPressed: () {
               Navigator.push(
                 context,
@@ -61,13 +68,13 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
               size: 30.0,
             )),
         appBar: new AppBar(
-          backgroundColor: const Color(0xff000000),
+          backgroundColor: const Color(0xff272727),
           title: new Theme(
             child: Row(
               children: <Widget>[
                 new DropdownButtonHideUnderline(
                   child: new DropdownButton<String>(
-                    dropdownColor: Colors.blue[300],
+                    dropdownColor: Color(0xff363636),
                     value: _thvalue,
                     items: thList.map(
                       (item) {
@@ -147,11 +154,11 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                     height: 10.0,
                   ),
                   Text(
-                    'No Activities Yet',
+                    'No Bases found',
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 12.0,
+                        fontSize: 16.0,
                         fontFamily: 'Quicksand'),
                   ),
                 ],
@@ -184,70 +191,72 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
   }
 
   Widget BaseLayoutCard(BaseLayoutItem item, String documentId) {
-    return Container(
-        width: 400,
-        height: 250,
-        margin: EdgeInsets.only(bottom: 20),
-        child: Stack(
-          children: <Widget>[
-            Center(child: CircularProgressIndicator()),
-            new Positioned.fill(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return DetailScreen(item.url);
-                  }));
-                },
-                child: FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image: item.url,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-                top: 210,
-                left: 10,
+    return Card(
+      margin: EdgeInsets.only(bottom: 20),
+      child: Container(
+          width: 400,
+          height: 250,
+          child: Stack(
+            children: <Widget>[
+              Center(child: CircularProgressIndicator()),
+              new Positioned.fill(
                 child: GestureDetector(
-                    onTap: () {
-                      if (item.favourite == false) {
-                        FavUtils.addFav(
-                            documentId,
-                            item.url + ";" + item.download_url,
-                            "home village favourities");
-                      } else {
-                        FavUtils.removeFav(
-                            documentId, "home village favourities");
-                      }
-                      setState(() {});
-                    },
-                    child: Icon(Icons.favorite,
-                        color: item.favourite == false
-                            ? Colors.white
-                            : Colors.pink[300]))),
-            Positioned(
-              top: 10,
-              left: 350,
-              child: GestureDetector(
-                onTap: () {
-                  Share.share(item.download_url.toString());
-                },
-                child: Icon(
-                  Icons.share,
-                  color: Colors.blue[300],
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return DetailScreen(item.url);
+                    }));
+                  },
+                  child: FadeInImage.memoryNetwork(
+                    placeholder: kTransparentImage,
+                    image: item.url,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-                top: 210,
+              Positioned(
+                  top: 210,
+                  left: 10,
+                  child: GestureDetector(
+                      onTap: () {
+                        if (item.favourite == false) {
+                          FavUtils.addFav(
+                              documentId,
+                              item.url + ";" + item.download_url,
+                              "home village favourities");
+                        } else {
+                          FavUtils.removeFav(
+                              documentId, "home village favourities");
+                        }
+                        setState(() {});
+                      },
+                      child: Icon(Icons.favorite,
+                          color: item.favourite == false
+                              ? Colors.white
+                              : Colors.pink[300]))),
+              Positioned(
+                top: 10,
                 left: 350,
                 child: GestureDetector(
-                    onTap: () {
-                      _launchURL(item.download_url);
-                    },
-                    child: Icon(Icons.file_download, color: Colors.white)))
-          ],
-        ));
+                  onTap: () {
+                    Share.share(item.download_url.toString());
+                  },
+                  child: Icon(
+                    Icons.share,
+                    color: Colors.blue[300],
+                  ),
+                ),
+              ),
+              Positioned(
+                  top: 210,
+                  left: 350,
+                  child: GestureDetector(
+                      onTap: () {
+                        _launchURL(item.download_url);
+                      },
+                      child: Icon(Icons.file_download, color: Colors.white)))
+            ],
+          )),
+    );
   }
 
   _launchURL(String copy_url) async {
@@ -266,6 +275,7 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff121212),
       body: GestureDetector(
         onTap: (){
           Navigator.pop(context);

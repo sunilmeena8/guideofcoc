@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'COC guide',
-      theme: ThemeData(primarySwatch: Colors.deepOrange),
+      theme: ThemeData.dark(),
       home: Updates(),
     );
   }

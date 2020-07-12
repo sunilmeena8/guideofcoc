@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guideofcoc/services.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,18 +10,10 @@ class HomeBaseAttackStrategy extends StatefulWidget {
 }
 
 class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
-  YoutubePlayerController _controller;
+  List<YoutubePlayerController> _controllers;
   var title = 'Attack Strategy Videos';
-  String _thvalue = "Town Hall 13";
-  var nameList = [
-    "Town Hall 13",
-    "Town Hall 12",
-    "Town Hall 11",
-    "Town Hall 10",
-    "Town Hall 9",
-    "Town Hall 8",
-    "Town Hall 7",
-  ];
+  String _thvalue = thList[0];
+
   final Firestore db = Firestore.instance;
   YoutubeMetaData _videoMetaData;
   PlayerState _playerState;
@@ -37,7 +30,7 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
                 child: new DropdownButton<String>(
                   dropdownColor: Colors.blue[300],
                   value: _thvalue,
-                  items: nameList.map(
+                  items: thList.map(
                     (item) {
                       return DropdownMenuItem(
                         value: item,
@@ -48,7 +41,11 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
                     },
                   ).toList(),
                   onChanged: (String value) {
-                    setState(() => _thvalue = value);
+                    setState(() {
+                      _thvalue = value;
+                      _controllers = null;
+                      getControllers(_thvalue);
+                    });
                   },
                 ),
               ),
@@ -63,110 +60,111 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
 
   @override
   void initState() {
-    super.initState();
-
+    getControllers(_thvalue);
     _videoMetaData = const YoutubeMetaData();
     _playerState = PlayerState.unknown;
-  }
-
-  void listener() {
-    if (_isPlayerReady && mounted && !_controller.value.isFullScreen) {
-      setState(() {
-        _playerState = _controller.value.playerState;
-        _videoMetaData = _controller.metadata;
-      });
-    }
-  }
-
-  void setController(String url) {
-    String videoId;
-    videoId = YoutubePlayer.convertUrlToId(url);
-    _controller = YoutubePlayerController(
-      initialVideoId: videoId,
-      flags: YoutubePlayerFlags(
-        mute: false,
-        autoPlay: false,
-        disableDragSeek: false,
-        loop: true,
-        isLive: false,
-        forceHD: false,
-        enableCaption: false,
-      ),
-    )..addListener(listener);
+    super.initState();
   }
 
   Widget AttackVideoList(context, String _thvalue) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: db.collection("videos/home village/" + _thvalue).snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.documents.length > 0) {
-            return ListView(
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-              children:
-                  snapshot.data.documents.map((DocumentSnapshot document) {
-                return AttackVideoCard(document.data['url']);
-              }).toList(),
-            );
-          } else {
-            return Container(
-              padding: EdgeInsets.only(top: 50.0),
-              height: MediaQuery.of(context).size.height - 200,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Image.asset('images/not-found.png', width: 40, height: 40.0),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    'No Activities Yet',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12.0,
-                        fontFamily: 'Quicksand'),
-                  ),
-                ],
+    if (_controllers != null) {
+      if (_controllers.length > 0) {
+        return ListView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+            itemCount: _controllers.length,
+            itemBuilder: (BuildContext context, int index) {
+              // print(_controllers);
+              return AttackVideoCard(_controllers[index]);
+            });
+      } else {
+        return Container(
+          padding: EdgeInsets.only(top: 50.0),
+          height: MediaQuery.of(context).size.height - 200,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Image.asset('images/not-found.png', width: 40, height: 40.0),
+              SizedBox(
+                height: 10.0,
               ),
-            );
-          }
-        } else {
-          return Container(
-            padding: EdgeInsets.only(top: 50.0),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                //loader
-                SizedBox(height: 15.0),
-                Text(
-                  'Please Wait',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14.0,
-                      fontFamily: 'Quicksand'),
-                ),
-              ],
+              Text(
+                'No Activities Yet',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12.0,
+                    fontFamily: 'Quicksand'),
+              ),
+            ],
+          ),
+        );
+      }
+    } else {
+      return Container(
+        padding: EdgeInsets.only(top: 50.0),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            //loader
+            SizedBox(height: 15.0),
+
+            Text(
+              'Please Wait',
+              style: TextStyle(
+                  color: Colors.black, fontSize: 14.0, fontFamily: 'Quicksand'),
             ),
-          );
+          ],
+        ),
+      );
+    }
+  }
+
+  getControllers(String th) {
+    db
+        .collection("videos/home village/" + th + "/")
+        .getDocuments()
+        .then((querySnapshot) {
+      querySnapshot.documents.forEach((result) async {
+        var urls = result.data['urls'];
+        
+        var ids = [];
+        if (urls.length > 0) {
+          for (int i = 0; i < urls.length; i++) {
+            ids.add(YoutubePlayer.convertUrlToId(urls[i]));
+          }
         }
-      },
-    );
+
+        if (ids.length == 0) {
+          _controllers = [];
+        } else {
+          _controllers = ids
+              .map<YoutubePlayerController>(
+                (videoId) => YoutubePlayerController(
+                  initialVideoId: videoId,
+                  flags: const YoutubePlayerFlags(
+                    autoPlay: false,
+                  ),
+                ),
+              )
+              .toList();
+        }
+          setState(() {});
+        
+      });
+    });
   }
 
   bool _isPlayerReady = false;
 
-  Widget AttackVideoCard(String url) {
-    setController(url);
+  Widget AttackVideoCard(YoutubePlayerController _controller) {
     // while(_isPlayerReady==false);
     return Container(
       padding: EdgeInsets.only(bottom: 20),
       child: YoutubePlayerBuilder(
-        
         player: YoutubePlayer(
           controller: _controller,
           showVideoProgressIndicator: true,

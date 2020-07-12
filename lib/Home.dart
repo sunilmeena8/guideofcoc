@@ -17,25 +17,26 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
   CarouselSlider topSlider;
   var popupChoices = [
     "Share",
     "Rate Us",
-    
     "Contact Us",
   ];
+  var choiceIcons = {
+    "Share":Icons.share,
+    "Rate Us":Icons.star_border,
+    "Contact Us":Icons.mail_outline,
+  };
   var popupUrls = [
     "Hey Clashers i have an amzing app for you, Pls Download..  https://play.google.com/store/apps/details?id=guide.coc.guidecoc",
     "https://play.google.com/store/apps/details?id=com.tencent.iglite",
-    
     "mailto:sunil98meena@gmail.com?subject= Help and Support",
   ];
   final Firestore db = Firestore.instance;
 
   @override
   void initState() {
-    
     super.initState();
   }
 
@@ -61,63 +62,69 @@ class _HomeState extends State<Home> {
 
   getSlider() {
     return CarouselSlider(
-              viewportFraction: 0.9,
-              aspectRatio: 2.0,
-              autoPlay: true,
-              enlargeCenterPage: true,
-              items: updatesList.map(
-                (urls) {
-                  
-                  var imgUrl, pageUrl;
-                  imgUrl = urls.split(";")[0];
-                  pageUrl = urls.split(";")[1];
-                  return GestureDetector(
-                    onTap: () {
-                      launch_url(pageUrl);
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(5.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        child: Image.network(
-                          imgUrl,
-                          fit: BoxFit.cover,
-                          width: double.maxFinite,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ).toList(),
-            );
-          
+      viewportFraction: 0.9,
+      aspectRatio: 2.0,
+      autoPlay: true,
+      enlargeCenterPage: true,
+      items: updatesList.map(
+        (urls) {
+          var imgUrl, pageUrl;
+          imgUrl = urls.split(";")[0];
+          pageUrl = urls.split(";")[1];
+          return GestureDetector(
+            onTap: () {
+              launch_url(pageUrl);
+            },
+            child: Container(
+              margin: EdgeInsets.all(5.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                child: Image.network(
+                  imgUrl,
+                  fit: BoxFit.cover,
+                  width: double.maxFinite,
+                ),
+              ),
+            ),
+          );
+        },
+      ).toList(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffeff5f4),
+      backgroundColor: const Color(0xff121212),
       appBar: AppBar(
-        backgroundColor: Color(0xff121212),
+        elevation: 4,
+        backgroundColor: Color(0xff272727),
         title: Text(
           'COC Guide',
           style: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 24,
-            color: const Color(0xffffffff),
-            fontWeight: FontWeight.w700,
+            color: Colors.blue[200],
+            fontWeight: FontWeight.w500,
           ),
           textAlign: TextAlign.left,
         ),
         actions: <Widget>[
           PopupMenuButton<String>(
-            icon: Icon(Icons.more_vert, color: Colors.white),
+            color: Color(0xff272727),
+            icon: Icon(Icons.more_vert, color: Colors.blue[200]),
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
               return popupChoices.map((String choice) {
                 return PopupMenuItem<String>(
+                  
                   value: choice,
-                  child: Text(choice),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(choiceIcons[choice], color: Colors.blue[200]),
+                      Text("  " + choice,style: TextStyle(color: Colors.blue[200])),
+                    ],
+                  ),
                 );
               }).toList();
             },
@@ -135,7 +142,7 @@ class _HomeState extends State<Home> {
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 24,
-                color: const Color(0xff000000),
+                color:Colors.tealAccent[100],
                 fontWeight: FontWeight.w700,
                 height: 2.4187634785970054,
               ),
@@ -147,142 +154,10 @@ class _HomeState extends State<Home> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HomeBaseBaseLayouts()),
-                    );
-                  },
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        width: 178.0,
-                        height: 176.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: const Color(0xffffffff),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0x1a7364f8),
-                              offset:
-                                  Offset(-2.723942995071411, 5.346039295196533),
-                              blurRadius: 18,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 4,
-                        left: 5,
-                        child: Container(
-                          width: 150.0,
-                          height: 40.0,
-                          padding: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: const Color(0x0d7cb832),
-                          ),
-                          child: Text(
-                            'Base Layouts',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16,
-                              color: const Color(0xff0f0250),
-                              letterSpacing: 0.24,
-                              fontWeight: FontWeight.w600,
-                              height: 1.875,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(12.0, 20.0),
-                        child: Container(
-                          width: 35.0,
-                          height: 35.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: const Color(0x1afdbc5a),
-                          ),
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(20.0, 29.0),
-                        child: SvgPicture.string(
-                          _svg_fjhovl,
-                          allowDrawingOutsideViewBox: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HomeBaseAttackStrategy()),
-                    );
-                  },
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        width: 178.2,
-                        height: 176.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: const Color(0xffffffff),
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(13.0, 20.0),
-                        child: Container(
-                          width: 35.0,
-                          height: 35.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: const Color(0x1a1e98d4),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 2,
-                        left: 4,
-                        child: Container(
-                          width: 150.0,
-                          height: 40.0,
-                          padding: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: const Color(0x0d7cb832),
-                          ),
-                          child: Text(
-                            'Attack Videos',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16,
-                              color: const Color(0xff0f0250),
-                              letterSpacing: 0.24,
-                              fontWeight: FontWeight.w600,
-                              height: 1.875,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(20.0, 35.15),
-                        child: SvgPicture.string(
-                          _svg_u5or71,
-                          allowDrawingOutsideViewBox: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                choiceCard(context, 'Base Layouts', HomeBaseBaseLayouts(),
+                    _svg_fjhovl),
+                choiceCard(context, 'Attack Videos', HomeBaseAttackStrategy(),
+                    _svg_u5or71),
               ],
             ),
           ),
@@ -293,7 +168,7 @@ class _HomeState extends State<Home> {
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 24,
-                color: const Color(0xff000000),
+                color: Colors.blue[200],
                 fontWeight: FontWeight.w700,
                 height: 2.4187634785970054,
               ),
@@ -305,154 +180,84 @@ class _HomeState extends State<Home> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BuilderBaseBaseLayouts()),
-                    );
-                  },
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        width: 178.0,
-                        height: 176.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: const Color(0xffffffff),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0x1a7364f8),
-                              offset:
-                                  Offset(-2.723942995071411, 5.346039295196533),
-                              blurRadius: 18,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(12.0, 122.0),
-                        child: Container(
-                          width: 153.0,
-                          height: 45.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: const Color(0x0dfdbc5a),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 2,
-                        left: 4,
-                        child: Container(
-                          width: 150.0,
-                          height: 40.0,
-                          padding: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: const Color(0x0d7cb832),
-                          ),
-                          child: Text(
-                            'Base Layouts',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16,
-                              color: const Color(0xff0f0250),
-                              letterSpacing: 0.24,
-                              fontWeight: FontWeight.w600,
-                              height: 1.875,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(12.0, 20.0),
-                        child: Container(
-                          width: 35.0,
-                          height: 35.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: const Color(0x1afdbc5a),
-                          ),
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(20.0, 29.0),
-                        child: SvgPicture.string(
-                          _svg_fjhovl,
-                          allowDrawingOutsideViewBox: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BuilderBaseAttackStrategy()),
-                    );
-                  },
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        width: 178.2,
-                        height: 176.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: const Color(0xffffffff),
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(13.0, 20.0),
-                        child: Container(
-                          width: 35.0,
-                          height: 35.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: const Color(0x1a1e98d4),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 2,
-                        left: 4,
-                        child: Container(
-                          width: 150.0,
-                          height: 40.0,
-                          padding: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: const Color(0x0d7cb832),
-                          ),
-                          child: Text(
-                            'Attack Videos',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16,
-                              color: const Color(0xff0f0250),
-                              letterSpacing: 0.24,
-                              fontWeight: FontWeight.w600,
-                              height: 1.875,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(20.0, 35.15),
-                        child: SvgPicture.string(
-                          _svg_u5or71,
-                          allowDrawingOutsideViewBox: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                choiceCard(context, 'Base Layouts', BuilderBaseBaseLayouts(),
+                    _svg_fjhovl),
+                choiceCard(context, 'Attack Videos',
+                    BuilderBaseAttackStrategy(), _svg_u5or71),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget choiceCard(context, String text, Widget widget, String svg) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => widget),
+        );
+      },
+      child: Stack(
+        children: <Widget>[
+          Container(
+            width: 178.0,
+            height: 176.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0),
+              color: const Color(0xff3b3b3b),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0x1a7364f8),
+                  offset: Offset(-2.723942995071411, 5.346039295196533),
+                  blurRadius: 18,
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 5,
+            left: 5,
+            child: Container(
+              width: 150.0,
+              height: 40.0,
+              padding: EdgeInsets.only(left: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: const Color(0xff626262),
+              ),
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 16,
+                  color: Colors.blue[200],
+                  letterSpacing: 0.24,
+                  fontWeight: FontWeight.w600,
+                  height: 1.875,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+          Transform.translate(
+            offset: Offset(12.0, 20.0),
+            child: Container(
+              width: 35.0,
+              height: 35.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: const Color(0x1afdbc5a),
+              ),
+            ),
+          ),
+          Transform.translate(
+            offset: Offset(20.0, 29.0),
+            child: SvgPicture.string(
+              svg,
+              allowDrawingOutsideViewBox: true,
             ),
           ),
         ],
