@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:guideofcoc/Home.dart';
 import 'package:guideofcoc/services.dart';
 import 'package:guideofcoc/splashscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MyApp());
-var admin = true;
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -34,9 +33,10 @@ class _UpdatesState extends State<Updates> {
 
   @override
   Widget build(BuildContext context) {
-    getUpdates();
-    getTownHalls();
-    getBuilderHalls();
+    
+    // getUpdates();
+    // getTownHalls();
+    // getBuilderHalls();
     return SplashScreen();
   }
 
@@ -47,6 +47,8 @@ class _UpdatesState extends State<Updates> {
       querySnapshot.documents.forEach((result) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("updates", result.data['urls'].join(" "));
+        appState["updates"] = result.data['urls'];
+        print(appState["updates"]);
       });
     });
   }
@@ -56,6 +58,8 @@ class _UpdatesState extends State<Updates> {
       querySnapshot.documents.forEach((result) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("town halls", result.data["list"].join(";"));
+        appState["thList"] = result.data['list'];
+        print(appState["thList"]);
       });
     });
   }
@@ -65,6 +69,8 @@ class _UpdatesState extends State<Updates> {
       querySnapshot.documents.forEach((result) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("builder halls", result.data["list"].join(";"));
+        appState["builder halls"] = result.data['list'];
+        print(appState["builder halls"]);
       });
     });
   }

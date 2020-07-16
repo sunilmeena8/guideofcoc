@@ -6,7 +6,9 @@ import 'package:guideofcoc/Builderbase/attackstrategy.dart';
 import 'package:guideofcoc/Builderbase/baselayouts.dart';
 import 'package:guideofcoc/Homevillage/attackstrategy.dart';
 import 'package:guideofcoc/Homevillage/baselayouts.dart';
+import 'package:guideofcoc/latestupdates.dart';
 import 'package:guideofcoc/services.dart';
+import 'package:guideofcoc/utils/update_from_firebase.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -40,11 +42,7 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  Future<String> getFromSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString("updates");
-    return stringValue;
-  }
+  
 
   void handleClick(String value) {
     switch (value) {
@@ -60,20 +58,30 @@ class _HomeState extends State<Home> {
     }
   }
 
+
+
   getSlider() {
+    // print(appState[dataStrings[0]]);
+    // if(appState[dataStrings[0]].length!=0){
+    //   GetUpdates.();
+    // }
     return CarouselSlider(
       viewportFraction: 0.9,
       aspectRatio: 2.0,
       autoPlay: true,
       enlargeCenterPage: true,
-      items: updatesList.map(
+      items: appState[dataStrings[0]].map(
         (urls) {
           var imgUrl, pageUrl;
           imgUrl = urls.split(";")[0];
           pageUrl = urls.split(";")[1];
           return GestureDetector(
             onTap: () {
-              launch_url(pageUrl);
+              Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LatestUpdates()),
+        );
+              // launch_url(pageUrl);
             },
             child: Container(
               margin: EdgeInsets.all(5.0),
@@ -134,7 +142,6 @@ class _HomeState extends State<Home> {
       body: ListView(
         children: <Widget>[
           getSlider(),
-          // updates.length==0?Text("Loading..."):Container(margin: EdgeInsets.only(top: 10), child: topSlider),
           Container(
             margin: EdgeInsets.only(top: 10, bottom: 5, left: 10),
             child: Text(
@@ -142,7 +149,7 @@ class _HomeState extends State<Home> {
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 24,
-                color:Colors.tealAccent[100],
+                color: Colors.blue[200],
                 fontWeight: FontWeight.w700,
                 height: 2.4187634785970054,
               ),
@@ -267,7 +274,7 @@ class _HomeState extends State<Home> {
 
   launch_url(String url) async {
     if (await canLaunch(url)) {
-      await launch(url);
+      await launch(url,forceWebView: true);
     } else {
       throw 'Could not launch $url';
     }

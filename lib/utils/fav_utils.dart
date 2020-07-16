@@ -46,7 +46,12 @@ class FavUtils {
   static getAllFavourities(String villageType) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String fabString = prefs.getString(villageType);
-    Map<String, dynamic> fabs = jsonDecode(fabString);
+
+    Map<String, dynamic> fabs = new Map<String, dynamic>();
+    if (fabString != null) {
+      fabs = jsonDecode(fabString);
+    }
+
     return (fabs);
   }
 }

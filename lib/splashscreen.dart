@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guideofcoc/Home.dart';
@@ -12,6 +14,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final Firestore db = Firestore.instance;
+
   @override
   void initState() {
     super.initState();
@@ -20,18 +24,34 @@ class _SplashScreenState extends State<SplashScreen> {
 
   startTime() async {
     var _duration = new Duration(seconds: 1);
-    return new Timer(_duration, navigationPage);
+    return new Timer(_duration, checkSP);
+  }
+
+  void checkSP() {
+    SharedPreferences.getInstance().then((prefs) async {
+      if (prefs.get(dataStrings[0]) == null ||
+          prefs.get(dataStrings[1]) == null ||
+          prefs.get(dataStrings[2]) == null) {
+       await getUpdates(dataStrings);
+      } else {
+        dataStrings.forEach((value) {
+          String jsonString = prefs.get(value);
+          // print(jsonString);
+          Map<String, dynamic> map = jsonDecode(jsonString);
+          appState[value] = map[value];
+        });
+        await getUpdates(dataStrings);
+      }
+      navigationPage();
+    });
   }
 
   void navigationPage() {
-    SharedPreferences.getInstance().then((prefs) async {
-      await getFromSP();
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Home(),
-          ));
-    });
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Home(),
+        ));
   }
 
   @override
@@ -43,10 +63,18 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  getFromSP() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    thList = prefs.getString("town halls").split(';');
-    updatesList = prefs.getString("updates").split(' ');
-    bhList = prefs.getString('builder halls').split(';');
+  getUpdates(List<String> data) async {
+    await Future.forEach(data, (value) async{
+      await db.collection(value).getDocuments().then((querySnapshot) {
+        querySnapshot.documents.forEach((result) async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          Map<String, List<dynamic>> map = new Map<String, List<dynamic>>();
+          map[value] = result.data["list"];
+          String jsonString = jsonEncode(map);
+          prefs.setString(value, jsonString);
+          appState[value] = result.data['list'];
+        });
+      });
+    });
   }
 }

@@ -12,7 +12,7 @@ class HomeBaseAttackStrategy extends StatefulWidget {
 class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
   List<YoutubePlayerController> _controllers;
   var title = 'Attack Strategy Videos';
-  String _thvalue = thList[0];
+  String _thvalue = appState[dataStrings[1]][0];
 
   final Firestore db = Firestore.instance;
   YoutubeMetaData _videoMetaData;
@@ -27,20 +27,24 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
           child: Row(
             children: <Widget>[
               new DropdownButtonHideUnderline(
-                child: new DropdownButton<String>(
-                  dropdownColor: Colors.blue[300],
+                child: new DropdownButton<dynamic>(
+                  dropdownColor: Color(0xff363636),
                   value: _thvalue,
-                  items: thList.map(
+                  items: appState[dataStrings[1]].map(
                     (item) {
                       return DropdownMenuItem(
                         value: item,
-                        child: Text(
-                          item,
-                        ),
+                        child: Text(item,
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 20,
+                              color: Colors.blue[200],
+                              fontWeight: FontWeight.w500,
+                            )),
                       );
                     },
                   ).toList(),
-                  onChanged: (String value) {
+                  onChanged: (dynamic value) {
                     setState(() {
                       _thvalue = value;
                       _controllers = null;
@@ -90,11 +94,11 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
                 height: 10.0,
               ),
               Text(
-                'No Activities Yet',
+                'No favourities',
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 12.0,
+                    fontSize: 18.0,
                     fontFamily: 'Quicksand'),
               ),
             ],
@@ -113,9 +117,9 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
             SizedBox(height: 15.0),
 
             Text(
-              'Please Wait',
+              'Please wait...',
               style: TextStyle(
-                  color: Colors.black, fontSize: 14.0, fontFamily: 'Quicksand'),
+                  color: Colors.white, fontSize: 20.0, fontFamily: 'Quicksand'),
             ),
           ],
         ),
@@ -130,7 +134,7 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
         .then((querySnapshot) {
       querySnapshot.documents.forEach((result) async {
         var urls = result.data['urls'];
-        
+
         var ids = [];
         if (urls.length > 0) {
           for (int i = 0; i < urls.length; i++) {
@@ -152,8 +156,7 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
               )
               .toList();
         }
-          setState(() {});
-        
+        setState(() {});
       });
     });
   }

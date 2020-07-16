@@ -3,18 +3,18 @@ import 'package:guideofcoc/services.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 
 class BuilderBaseAttackStrategy extends StatefulWidget {
   @override
-  _BuilderBaseAttackStrategyState createState() => _BuilderBaseAttackStrategyState();
+  _BuilderBaseAttackStrategyState createState() =>
+      _BuilderBaseAttackStrategyState();
 }
 
 class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
   List<YoutubePlayerController> _controllers;
   var title = 'Attack Strategy Videos';
-  String _bhvalue = bhList[0];
-  
+  String _bhvalue = appState[dataStrings[2]][0];
+
   final Firestore db = Firestore.instance;
   YoutubeMetaData _videoMetaData;
   PlayerState _playerState;
@@ -28,24 +28,29 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
           child: Row(
             children: <Widget>[
               new DropdownButtonHideUnderline(
-                child: new DropdownButton<String>(
-                  dropdownColor: Colors.blue[300],
+                child: new DropdownButton<dynamic>(
+                  dropdownColor: Color(0xff363636),
                   value: _bhvalue,
-                  items:  bhList.map(
+                  items: appState[dataStrings[2]].map(
                     (item) {
                       return DropdownMenuItem(
                         value: item,
-                        child: Text(
-                          item,
-                        ),
+                        child: Text(item,
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 20,
+                              color: Colors.blue[200],
+                              fontWeight: FontWeight.w500,
+                            )),
                       );
                     },
                   ).toList(),
-                  onChanged: (String value) {
+                  onChanged: (dynamic value) {
                     setState(() {
                       _bhvalue = value;
                       _controllers = null;
                       getControllers(_bhvalue);
+                      print(_controllers);
                     });
                   },
                 ),
@@ -67,15 +72,14 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
     super.initState();
   }
 
-
-getControllers(String bh) {
+  getControllers(String bh) {
     db
         .collection("videos/builder base/" + bh + "/")
         .getDocuments()
         .then((querySnapshot) {
       querySnapshot.documents.forEach((result) async {
         var urls = result.data['urls'];
-        
+
         var ids = [];
         if (urls.length > 0) {
           for (int i = 0; i < urls.length; i++) {
@@ -97,12 +101,10 @@ getControllers(String bh) {
               )
               .toList();
         }
-          setState(() {});
-        
+        setState(() {});
       });
     });
   }
-
 
   Widget AttackVideoList(context, String _thvalue) {
     if (_controllers != null) {
@@ -128,11 +130,11 @@ getControllers(String bh) {
                 height: 10.0,
               ),
               Text(
-                'No Activities Yet',
+                'No favourities',
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 12.0,
+                    fontSize: 18.0,
                     fontFamily: 'Quicksand'),
               ),
             ],
@@ -151,9 +153,9 @@ getControllers(String bh) {
             SizedBox(height: 15.0),
 
             Text(
-              'Please Wait',
+              'Please wait...',
               style: TextStyle(
-                  color: Colors.black, fontSize: 14.0, fontFamily: 'Quicksand'),
+                  color: Colors.white, fontSize: 20.0, fontFamily: 'Quicksand'),
             ),
           ],
         ),

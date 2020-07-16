@@ -52,7 +52,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
   ];
 
   final Firestore db = Firestore.instance;
-  String _bhvalue = bhList[0];
+  String _bhvalue = appState[dataStrings[2]][0];
   static bool favourite = false;
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,6 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
       child: Scaffold(
           floatingActionButton: FloatingActionButton(
               elevation: 10.0,
-              backgroundColor: Colors.deepOrange,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -80,20 +79,23 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
               child: Row(
                 children: <Widget>[
                   new DropdownButtonHideUnderline(
-                    child: new DropdownButton<String>(
-                      dropdownColor: Colors.blue[300],
+                    child: new DropdownButton<dynamic>(
                       value: _bhvalue,
-                      items: bhList.map(
+                      items: appState[dataStrings[2]].map(
                         (item) {
                           return DropdownMenuItem(
                             value: item,
-                            child: Text(
-                              item,
-                            ),
+                            child: Text(item,
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 20,
+                                  color: Colors.blue[200],
+                                  fontWeight: FontWeight.w500,
+                                )),
                           );
                         },
                       ).toList(),
-                      onChanged: (String value) {
+                      onChanged: (dynamic value) {
                         setState(() => _bhvalue = value);
                       },
                     ),
@@ -145,11 +147,11 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                     height: 10.0,
                   ),
                   Text(
-                    'No Activities Yet',
+                    'No favourities',
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 12.0,
+                        fontSize: 18.0,
                         fontFamily: 'Quicksand'),
                   ),
                 ],
@@ -167,10 +169,10 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                 //loader
                 SizedBox(height: 15.0),
                 Text(
-                  'Please Wait',
+                  'Please wait...',
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14.0,
+                      color: Colors.white,
+                      fontSize: 20.0,
                       fontFamily: 'Quicksand'),
                 ),
               ],
@@ -268,10 +270,13 @@ class DetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           Navigator.pop(context);
         },
         child: PhotoView(
+          enableRotation: true,
+          minScale: 0.4,
+          maxScale: 5.0,
           imageProvider: NetworkImage(url),
         ),
       ),

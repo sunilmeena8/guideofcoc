@@ -35,20 +35,17 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
   ];
 
   final Firestore db = Firestore.instance;
-  String _thvalue = thList[0];
+  String _thvalue = appState[dataStrings[1]][0];
 
   static bool favourite = false;
 
   @override
   void initState() {
-    
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    // getThs();
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -73,20 +70,24 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
             child: Row(
               children: <Widget>[
                 new DropdownButtonHideUnderline(
-                  child: new DropdownButton<String>(
+                  child: new DropdownButton<dynamic>(
                     dropdownColor: Color(0xff363636),
                     value: _thvalue,
-                    items: thList.map(
+                    items: appState[dataStrings[1]].map(
                       (item) {
                         return DropdownMenuItem(
                           value: item,
-                          child: Text(
-                            item,
-                          ),
+                          child: Text(item,
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 20,
+                                color: Colors.blue[200],
+                                fontWeight: FontWeight.w500,
+                              )),
                         );
                       },
                     ).toList(),
-                    onChanged: (String value) {
+                    onChanged: (dynamic value) {
                       setState(() => _thvalue = value);
                     },
                   ),
@@ -176,10 +177,10 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 //loader
                 SizedBox(height: 15.0),
                 Text(
-                  'Please Wait',
+                  'Please wait...',
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14.0,
+                      color: Colors.white,
+                      fontSize: 20.0,
                       fontFamily: 'Quicksand'),
                 ),
               ],
@@ -277,7 +278,7 @@ class DetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xff121212),
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           Navigator.pop(context);
         },
         child: PhotoView(

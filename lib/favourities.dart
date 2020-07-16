@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guideofcoc/utils/fav_utils.dart';
 import 'package:share/share.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'Homevillage/baselayouts.dart';
@@ -24,18 +25,67 @@ class _FavouritiesState extends State<Favourities> {
       body: FutureBuilder(
           future: FavUtils.getAllFavourities(widget.villageType),
           builder: (context, map) {
-            List<String> keys = map.data.keys.toList();
-            print(keys);
-            return ListView(
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-              children: keys.map((key) {
-                BaseLayoutItem item = new BaseLayoutItem();
-                item.url = map.data[key].split(";")[0];
-                item.download_url = map.data[key].split(";")[0];
-                item.favourite = true;
-                return BaseLayoutCard(item, key);
-              }).toList(),
-            );
+            if (map.connectionState == ConnectionState.waiting) {
+              return Container(
+                padding: EdgeInsets.only(top: 50.0),
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    //loader
+                    SizedBox(height: 15.0),
+                    Text(
+                      'Please wait...',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontFamily: 'Quicksand'),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              if (map.data.length > 0) {
+                List<String> keys = map.data.keys.toList();
+                return ListView(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+                  children: keys.map((key) {
+                    BaseLayoutItem item = new BaseLayoutItem();
+                    item.url = map.data[key].split(";")[0];
+                    item.download_url = map.data[key].split(";")[0];
+                    item.favourite = true;
+                    return BaseLayoutCard(item, key);
+                  }).toList(),
+                );
+              } else {
+                return Container(
+                  padding: EdgeInsets.only(top: 50.0),
+                  height: MediaQuery.of(context).size.height - 200,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset('images/not-found.png',
+                          width: 40, height: 40.0),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Text(
+                        'No favourities',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18.0,
+                            fontFamily: 'Quicksand'),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            }
           }),
     );
   }
@@ -47,11 +97,21 @@ class _FavouritiesState extends State<Favourities> {
         margin: EdgeInsets.only(bottom: 20),
         child: Stack(
           children: <Widget>[
+            Center(child: CircularProgressIndicator()),
             new Positioned.fill(
-                child: Image.network(
-              item.url,
-              fit: BoxFit.cover,
-            )),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return DetailScreen(item.url);
+                  }));
+                },
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: item.url,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
             Positioned(
                 top: 210,
                 left: 10,
