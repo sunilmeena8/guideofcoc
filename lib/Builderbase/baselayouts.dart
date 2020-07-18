@@ -67,7 +67,9 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                   MaterialPageRoute(
                       builder: (context) =>
                           Favourities("builder base favourities")),
-                );
+                ).then((value) {
+                  setState(() {});
+                });
               },
               child: Icon(
                 Icons.favorite,

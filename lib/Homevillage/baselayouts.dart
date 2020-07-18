@@ -58,7 +58,9 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 MaterialPageRoute(
                     builder: (context) =>
                         Favourities("home village favourities")),
-              );
+              ).then((value) {
+                setState(() {});
+              });
             },
             child: Icon(
               Icons.favorite,
