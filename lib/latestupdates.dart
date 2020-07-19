@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LatestUpdates extends StatefulWidget {
+  String url;
+  LatestUpdates(this.url);
   @override
   _LatestUpdatesState createState() => _LatestUpdatesState();
 }
@@ -18,15 +20,13 @@ class _LatestUpdatesState extends State<LatestUpdates> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Latest'),
-          // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
         ),
         body: Builder(builder: (BuildContext context) {
           return Stack(
             children: <Widget>[
               WebView(
-                initialUrl: 'https://en.wikipedia.org/wiki/Kraken',
+                initialUrl: widget.url,
                 onPageFinished: (String url) {
-                  print('Page started loading $url');
                   setState(() {
                     loading = false;
                   });
@@ -42,15 +42,7 @@ class _LatestUpdatesState extends State<LatestUpdates> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'Please wait...',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                                fontFamily: 'Quicksand'),
-                          ),
-                        ],
+                        children: <Widget>[CircularProgressIndicator()],
                       ),
                     )
                   : Container(),

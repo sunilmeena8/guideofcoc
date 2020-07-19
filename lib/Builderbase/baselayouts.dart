@@ -114,7 +114,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
 
   Widget baseList(context, String _bhvalue) {
     return StreamBuilder<QuerySnapshot>(
-      stream: db.collection("bases/builder base/" + _bhvalue).snapshots(),
+      stream: db.collection("builderbase/baselayouts/" + _bhvalue).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.documents.length > 0) {
@@ -150,7 +150,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                     height: 10.0,
                   ),
                   Text(
-                    'No favourities',
+                    'No Bases found',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -172,7 +172,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                 //loader
                 SizedBox(height: 15.0),
                 Text(
-                  'Please wait...',
+                  loadingText,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
@@ -198,7 +198,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return DetailScreen(item.url,item.download_url);
+                    return DetailScreen(item.url, item.download_url);
                   }));
                 },
                 child: FadeInImage.memoryNetwork(
@@ -255,6 +255,4 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
           ],
         ));
   }
-
-  
 }

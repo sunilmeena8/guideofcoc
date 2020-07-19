@@ -32,11 +32,11 @@ class _SplashScreenState extends State<SplashScreen> {
       if (prefs.get(dataStrings[0]) == null ||
           prefs.get(dataStrings[1]) == null ||
           prefs.get(dataStrings[2]) == null) {
-       await getUpdates(dataStrings);
+        await getUpdates(dataStrings);
       } else {
         dataStrings.forEach((value) {
           String jsonString = prefs.get(value);
-          // print(jsonString);
+
           Map<String, dynamic> map = jsonDecode(jsonString);
           appState[value] = map[value];
         });
@@ -58,13 +58,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Center(
-        child: new Image.asset('images/splashscreen.jpg'),
+        child: new Image.asset('images/ic_launcher.png'),
       ),
     );
   }
 
   getUpdates(List<String> data) async {
-    await Future.forEach(data, (value) async{
+    await Future.forEach(data, (value) async {
       await db.collection(value).getDocuments().then((querySnapshot) {
         querySnapshot.documents.forEach((result) async {
           SharedPreferences prefs = await SharedPreferences.getInstance();

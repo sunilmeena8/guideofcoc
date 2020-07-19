@@ -4,3 +4,5 @@ Map<String, List<dynamic>> appState = {
   dataStrings[1]: ['Town Hall 13'],
   dataStrings[2]: ['Builder Hall 9']
 };
+
+String loadingText="Loading...";

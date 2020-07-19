@@ -11,7 +11,7 @@ class HomeBaseAttackStrategy extends StatefulWidget {
 
 class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
   List<YoutubePlayerController> _controllers;
-  var title = 'Attack Strategy Videos';
+
   String _thvalue = appState[dataStrings[1]][0];
 
   final Firestore db = Firestore.instance;
@@ -77,7 +77,6 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
             itemCount: _controllers.length,
             itemBuilder: (BuildContext context, int index) {
-              // print(_controllers);
               return AttackVideoCard(_controllers[index]);
             });
       } else {
@@ -94,7 +93,7 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
                 height: 10.0,
               ),
               Text(
-                'No favourities',
+                'No videos found',
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -117,7 +116,7 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
             SizedBox(height: 15.0),
 
             Text(
-              'Please wait...',
+              loadingText,
               style: TextStyle(
                   color: Colors.white, fontSize: 20.0, fontFamily: 'Quicksand'),
             ),
@@ -129,14 +128,14 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
 
   getControllers(String th) {
     db
-        .collection("videos/home village/" + th + "/")
+        .collection("homevillage/attackvideos/" + th + "/")
         .getDocuments()
         .then((querySnapshot) {
       querySnapshot.documents.forEach((result) async {
         var urls = result.data['urls'];
 
         var ids = [];
-        if (urls.length > 0) {
+        if (urls != null && urls.length > 0) {
           for (int i = 0; i < urls.length; i++) {
             ids.add(YoutubePlayer.convertUrlToId(urls[i]));
           }
@@ -164,7 +163,6 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
   bool _isPlayerReady = false;
 
   Widget AttackVideoCard(YoutubePlayerController _controller) {
-    // while(_isPlayerReady==false);
     return Container(
       padding: EdgeInsets.only(bottom: 20),
       child: YoutubePlayerBuilder(

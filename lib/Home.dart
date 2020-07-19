@@ -30,7 +30,6 @@ class _HomeState extends State<Home> {
   var popupUrls = [
     "Hey Clashers i have an amzing app for you, Pls Download..  https://play.google.com/store/apps/details?id=com.clashofclans.guideofcoc",
     "https://play.google.com/store/apps/details?id=com.clashofclans.guideofcoc",
-    "mailto:guideofcoc@gmail.com?subject= Help and Support",
   ];
   final Firestore db = Firestore.instance;
 
@@ -45,7 +44,7 @@ class _HomeState extends State<Home> {
         Share.share(popupUrls[popupChoices.indexOf(value)]);
         break;
       case "Contact Us":
-        launch_url(popupUrls[popupChoices.indexOf(value)]);
+        mail();
         break;
       case "Rate Us":
         launch_url(popupUrls[popupChoices.indexOf(value)]);
@@ -67,10 +66,10 @@ class _HomeState extends State<Home> {
           return GestureDetector(
             onTap: () {
               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LatestUpdates()),
-              );
-              // launch_url(pageUrl);
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LatestUpdates(pageUrl),
+                  ));
             },
             child: Container(
               margin: EdgeInsets.all(5.0),
@@ -245,6 +244,15 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
+  }
+
+  mail() async {
+    const url = 'mailto:guideofcoc@gmail.com?subject= Help and Support';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   launch_url(String url) async {

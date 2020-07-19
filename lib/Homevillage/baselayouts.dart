@@ -120,7 +120,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
   Widget baseList(context, String type, String th) {
     return StreamBuilder<QuerySnapshot>(
       stream: db
-          .collection("bases/home village/" + th + "/" + type + "/bases")
+          .collection("homevillage/baselayouts/" + th + "/" + type + "/bases")
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
@@ -179,7 +179,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 //loader
                 SizedBox(height: 15.0),
                 Text(
-                  'Please wait...',
+                  loadingText,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
@@ -259,8 +259,6 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
           )),
     );
   }
-
-  
 }
 
 class DetailScreen extends StatelessWidget {

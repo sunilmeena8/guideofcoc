@@ -5,6 +5,8 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:guideofcoc/utils/launch_url_utils.dart';
 import 'Homevillage/baselayouts.dart';
 
+import 'package:guideofcoc/services.dart';
+
 class Favourities extends StatefulWidget {
   final String villageType;
   Favourities(this.villageType);
@@ -35,7 +37,7 @@ class _FavouritiesState extends State<Favourities> {
                     //loader
                     SizedBox(height: 15.0),
                     Text(
-                      'Please wait...',
+                      loadingText,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20.0,
@@ -101,7 +103,7 @@ class _FavouritiesState extends State<Favourities> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return DetailScreen(item.url,item.download_url);
+                    return DetailScreen(item.url, item.download_url);
                   }));
                 },
                 child: FadeInImage.memoryNetwork(
@@ -158,6 +160,4 @@ class _FavouritiesState extends State<Favourities> {
           ],
         ));
   }
-
-  
 }
