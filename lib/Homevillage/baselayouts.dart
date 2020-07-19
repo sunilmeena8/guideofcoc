@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:guideofcoc/favourities.dart';
 import 'package:guideofcoc/services.dart';
 import 'package:guideofcoc/utils/fav_utils.dart';
+import 'package:guideofcoc/utils/launch_url_utils.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -206,7 +206,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return DetailScreen(item.url);
+                      return DetailScreen(item.url, item.download_url);
                     }));
                   },
                   child: FadeInImage.memoryNetwork(
@@ -253,37 +253,41 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                   top: 210,
                   left: 350,
                   child: GestureDetector(
-                      onTap: () {
-                        _launchURL(item.download_url);
-                      },
+                      onTap: () {},
                       child: Icon(Icons.file_download, color: Colors.white)))
             ],
           )),
     );
   }
 
-  _launchURL(String copy_url) async {
-    String url = copy_url;
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  
 }
 
 class DetailScreen extends StatelessWidget {
-  final String url;
-  DetailScreen(this.url);
+  final String url, download_url;
+  DetailScreen(this.url, this.download_url);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff121212),
+      appBar: AppBar(
+        actions: <Widget>[
+          GestureDetector(
+            onTap: () {
+              UrlUtil.launchURL(download_url);
+            },
+            child: Icon(Icons.file_download),
+          )
+        ],
+      ),
       body: GestureDetector(
         onTap: () {
           Navigator.pop(context);
         },
         child: PhotoView(
+          enableRotation: true,
+          minScale: 0.4,
+          maxScale: 5.0,
           imageProvider: NetworkImage(url),
         ),
       ),

@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:guideofcoc/favourities.dart';
 import 'package:guideofcoc/services.dart';
 import 'package:guideofcoc/utils/fav_utils.dart';
-import 'package:photo_view/photo_view.dart';
+
+import '../Homevillage/baselayouts.dart';
 import 'package:share/share.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:guideofcoc/utils/launch_url_utils.dart';
 
 class BuilderBaseBaseLayouts extends StatefulWidget {
   @override
@@ -197,7 +198,7 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return DetailScreen(item.url);
+                    return DetailScreen(item.url,item.download_url);
                   }));
                 },
                 child: FadeInImage.memoryNetwork(
@@ -248,40 +249,12 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
                 left: 350,
                 child: GestureDetector(
                     onTap: () {
-                      _launchURL(item.download_url.toString());
+                      UrlUtil.launchURL(item.download_url.toString());
                     },
                     child: Icon(Icons.file_download, color: Colors.white)))
           ],
         ));
   }
 
-  _launchURL(String copy_url) async {
-    String url = copy_url;
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-}
-
-class DetailScreen extends StatelessWidget {
-  final String url;
-  DetailScreen(this.url);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: PhotoView(
-          enableRotation: true,
-          minScale: 0.4,
-          maxScale: 5.0,
-          imageProvider: NetworkImage(url),
-        ),
-      ),
-    );
-  }
+  
 }

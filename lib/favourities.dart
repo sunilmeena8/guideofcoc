@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guideofcoc/utils/fav_utils.dart';
 import 'package:share/share.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:url_launcher/url_launcher.dart';
-
+import 'package:guideofcoc/utils/launch_url_utils.dart';
 import 'Homevillage/baselayouts.dart';
 
 class Favourities extends StatefulWidget {
@@ -102,7 +101,7 @@ class _FavouritiesState extends State<Favourities> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return DetailScreen(item.url);
+                    return DetailScreen(item.url,item.download_url);
                   }));
                 },
                 child: FadeInImage.memoryNetwork(
@@ -153,19 +152,12 @@ class _FavouritiesState extends State<Favourities> {
                 left: 350,
                 child: GestureDetector(
                     onTap: () {
-                      _launchURL(item.download_url.toString());
+                      UrlUtil.launchURL(item.download_url.toString());
                     },
                     child: Icon(Icons.file_download, color: Colors.white)))
           ],
         ));
   }
 
-  _launchURL(String copy_url) async {
-    String url = copy_url;
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  
 }

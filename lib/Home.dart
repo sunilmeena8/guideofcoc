@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:guideofcoc/Builderbase/attackstrategy.dart';
 import 'package:guideofcoc/Builderbase/baselayouts.dart';
@@ -8,9 +7,7 @@ import 'package:guideofcoc/Homevillage/attackstrategy.dart';
 import 'package:guideofcoc/Homevillage/baselayouts.dart';
 import 'package:guideofcoc/latestupdates.dart';
 import 'package:guideofcoc/services.dart';
-import 'package:guideofcoc/utils/update_from_firebase.dart';
 import 'package:share/share.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
@@ -26,14 +23,14 @@ class _HomeState extends State<Home> {
     "Contact Us",
   ];
   var choiceIcons = {
-    "Share":Icons.share,
-    "Rate Us":Icons.star_border,
-    "Contact Us":Icons.mail_outline,
+    "Share": Icons.share,
+    "Rate Us": Icons.star_border,
+    "Contact Us": Icons.mail_outline,
   };
   var popupUrls = [
-    "Hey Clashers i have an amzing app for you, Pls Download..  https://play.google.com/store/apps/details?id=guide.coc.guidecoc",
-    "https://play.google.com/store/apps/details?id=com.tencent.iglite",
-    "mailto:sunil98meena@gmail.com?subject= Help and Support",
+    "Hey Clashers i have an amzing app for you, Pls Download..  https://play.google.com/store/apps/details?id=com.clashofclans.guideofcoc",
+    "https://play.google.com/store/apps/details?id=com.clashofclans.guideofcoc",
+    "mailto:guideofcoc@gmail.com?subject= Help and Support",
   ];
   final Firestore db = Firestore.instance;
 
@@ -41,8 +38,6 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
   }
-
-  
 
   void handleClick(String value) {
     switch (value) {
@@ -58,13 +53,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-
-
   getSlider() {
-    // print(appState[dataStrings[0]]);
-    // if(appState[dataStrings[0]].length!=0){
-    //   GetUpdates.();
-    // }
     return CarouselSlider(
       viewportFraction: 0.9,
       aspectRatio: 2.0,
@@ -78,9 +67,9 @@ class _HomeState extends State<Home> {
           return GestureDetector(
             onTap: () {
               Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LatestUpdates()),
-        );
+                context,
+                MaterialPageRoute(builder: (context) => LatestUpdates()),
+              );
               // launch_url(pageUrl);
             },
             child: Container(
@@ -108,13 +97,13 @@ class _HomeState extends State<Home> {
         elevation: 4,
         backgroundColor: Color(0xff272727),
         title: Text(
-          'Guide Of COC',
+          'GUIDE OF COC',
           style: TextStyle(
-            fontFamily: 'Poppins',
-            fontSize: 24,
-            color: Colors.blue[200],
-            fontWeight: FontWeight.w500,
-          ),
+              fontFamily: 'Poppins',
+              fontSize: 24,
+              color: Colors.blue[200],
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.5),
           textAlign: TextAlign.left,
         ),
         actions: <Widget>[
@@ -125,12 +114,12 @@ class _HomeState extends State<Home> {
             itemBuilder: (BuildContext context) {
               return popupChoices.map((String choice) {
                 return PopupMenuItem<String>(
-                  
                   value: choice,
                   child: Row(
                     children: <Widget>[
                       Icon(choiceIcons[choice], color: Colors.blue[200]),
-                      Text("  " + choice,style: TextStyle(color: Colors.blue[200])),
+                      Text("  " + choice,
+                          style: TextStyle(color: Colors.blue[200])),
                     ],
                   ),
                 );
@@ -161,8 +150,10 @@ class _HomeState extends State<Home> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                choiceCard(context, 'Base Layouts', HomeBaseBaseLayouts(),"images/home base/baselayouts.jpg"),
-                choiceCard(context, 'Attack Videos', HomeBaseAttackStrategy(),"images/home base/thvideos.jpg"),
+                choiceCard(context, 'Base Layouts', HomeBaseBaseLayouts(),
+                    "images/home base/baselayouts.jpg"),
+                choiceCard(context, 'Attack Videos', HomeBaseAttackStrategy(),
+                    "images/home base/thvideos.jpg"),
               ],
             ),
           ),
@@ -185,8 +176,13 @@ class _HomeState extends State<Home> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                choiceCard(context, 'Base Layouts', BuilderBaseBaseLayouts(),"images/builder base/bhlayouts.jpg"),
-                choiceCard(context, 'Attack Videos',BuilderBaseAttackStrategy(),"images/builder base/bhvideos.jpg"),
+                choiceCard(context, 'Base Layouts', BuilderBaseBaseLayouts(),
+                    "images/builder base/bhlayouts.jpg"),
+                choiceCard(
+                    context,
+                    'Attack Videos',
+                    BuilderBaseAttackStrategy(),
+                    "images/builder base/bhvideos.jpg"),
               ],
             ),
           ),
@@ -195,65 +191,65 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget choiceCard(context, String text, Widget widget,String backgroundImage) {
-    return Card(
-      elevation: 4,
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => widget),
-          );
-        },
-        child: Stack(
-          children: <Widget>[
-            Container(
+  Widget choiceCard(
+      context, String text, Widget widget, String backgroundImage) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => widget),
+        );
+      },
+      child: Stack(
+        children: <Widget>[
+          Container(
+            width: 178.0,
+            height: 176.0,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(backgroundImage), fit: BoxFit.cover),
+              borderRadius: BorderRadius.circular(5.0),
+              color: const Color(0xff3b3b3b),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0x1a7364f8),
+                  offset: Offset(-2.723942995071411, 5.346039295196533),
+                  blurRadius: 18,
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            child: Container(
               width: 178.0,
-              height: 176.0,
+              height: 40.0,
               decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage(backgroundImage),fit: BoxFit.cover),
-                color: const Color(0xff3b3b3b),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0x1a7364f8),
-                    offset: Offset(-2.723942995071411, 5.346039295196533),
-                    blurRadius: 18,
-                  ),
-                ],
+                borderRadius: BorderRadius.circular(5.0),
+                color: const Color(0xd0626262),
+              ),
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 18,
+                  color: Colors.blue[100],
+                  letterSpacing: 0.24,
+                  fontWeight: FontWeight.w600,
+                  height: 1.875,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                width: 178.0,
-                height: 40.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: const Color(0xd0626262),
-                ),
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontSize: 18,
-                    color: Colors.blue[100],
-                    letterSpacing: 0.24,
-                    fontWeight: FontWeight.w600,
-                    height: 1.875,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   launch_url(String url) async {
     if (await canLaunch(url)) {
-      await launch(url,forceWebView: true);
+      await launch(url, forceWebView: true);
     } else {
       throw 'Could not launch $url';
     }

@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "452048845778",
-    "firebase_url": "https://cocguide-b626e.firebaseio.com",
-    "project_id": "cocguide-b626e",
-    "storage_bucket": "cocguide-b626e.appspot.com"
+    "project_number": "814133636955",
+    "firebase_url": "https://guideofcoc-bf656.firebaseio.com",
+    "project_id": "guideofcoc-bf656",
+    "storage_bucket": "guideofcoc-bf656.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:452048845778:android:715ca6d00f736b8012e60b",
+        "mobilesdk_app_id": "1:814133636955:android:3b8aeac1d0939bc1ee747e",
         "android_client_info": {
-          "package_name": "com.example.guideofcoc"
+          "package_name": "com.clashofclans.guideofcoc"
         }
       },
       "oauth_client": [
         {
-          "client_id": "452048845778-74hq7qdrfmgc1uvr1hv0u7tkbrrtp6u2.apps.googleusercontent.com",
+          "client_id": "814133636955-6al9kt4avn8k5p0gghgdls4vtcrq9ss9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBmHMKaKr7ujzPC1DxRCiRLfT0lVWCyBvE"
+          "current_key": "AIzaSyB9yGdjBAvgfHXuAzpjD3cE-NEE1x2xlDU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "452048845778-74hq7qdrfmgc1uvr1hv0u7tkbrrtp6u2.apps.googleusercontent.com",
+              "client_id": "814133636955-6al9kt4avn8k5p0gghgdls4vtcrq9ss9.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
