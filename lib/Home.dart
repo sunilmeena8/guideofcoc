@@ -77,6 +77,18 @@ class _HomeState extends State<Home> {
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 child: Image.network(
                   imgUrl,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes
+                            : null,
+                      ),
+                    );
+                  },
                   fit: BoxFit.cover,
                   width: double.maxFinite,
                 ),
@@ -131,7 +143,7 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           getSlider(),
           Container(
-            margin: EdgeInsets.only(top: 10, bottom: 5, left: 10),
+            margin: EdgeInsets.only(bottom: 5, left: 10),
             child: Text(
               'Home Village',
               style: TextStyle(
@@ -157,7 +169,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 10, bottom: 5, left: 10),
+            margin: EdgeInsets.only(top: 5, bottom: 5, left: 10),
             child: Text(
               'Builder Base',
               style: TextStyle(
@@ -202,8 +214,8 @@ class _HomeState extends State<Home> {
       child: Stack(
         children: <Widget>[
           Container(
-            width: 178.0,
-            height: 176.0,
+            width: MediaQuery.of(context).size.width * 0.44,
+            height: MediaQuery.of(context).size.height * 0.214,
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(backgroundImage), fit: BoxFit.cover),
@@ -221,8 +233,8 @@ class _HomeState extends State<Home> {
           Positioned(
             bottom: 0,
             child: Container(
-              width: 178.0,
-              height: 40.0,
+              width: MediaQuery.of(context).size.width * 0.44,
+              height: MediaQuery.of(context).size.height * 0.048,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
                 color: const Color(0xd0626262),
@@ -235,7 +247,7 @@ class _HomeState extends State<Home> {
                   color: Colors.blue[100],
                   letterSpacing: 0.24,
                   fontWeight: FontWeight.w600,
-                  height: 1.875,
+                  height: 0.00235 * MediaQuery.of(context).size.height,
                 ),
                 textAlign: TextAlign.center,
               ),

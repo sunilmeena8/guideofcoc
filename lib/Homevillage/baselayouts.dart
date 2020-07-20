@@ -194,12 +194,18 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
   }
 
   Widget BaseLayoutCard(BaseLayoutItem item, String documentId) {
+    // print(MediaQuery.of(context).size.height);
+    // print(MediaQuery.of(context).size.width);
+
     return Card(
       margin: EdgeInsets.only(bottom: 20),
       child: Container(
-          width: 400,
-          height: 250,
-          child: Stack(
+        width: 0.00013 * MediaQuery.of(context).size.width,
+        height: 0.28 * MediaQuery.of(context).size.height,
+        child: new LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+          // print(constraints.maxHeight);
+          return Stack(
             children: <Widget>[
               Center(child: CircularProgressIndicator()),
               new Positioned.fill(
@@ -217,8 +223,8 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 ),
               ),
               Positioned(
-                  top: 210,
-                  left: 10,
+                  top: 0.85 * constraints.maxHeight,
+                  left: 0.015 * constraints.maxWidth,
                   child: GestureDetector(
                       onTap: () {
                         if (item.favourite == false) {
@@ -233,30 +239,41 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                         setState(() {});
                       },
                       child: Icon(Icons.favorite,
+                          size: 0.00034 *
+                              (constraints.maxHeight * constraints.maxWidth),
                           color: item.favourite == false
                               ? Colors.white
                               : Colors.pink[300]))),
               Positioned(
-                top: 10,
-                left: 350,
+                top: 0.019 * constraints.maxHeight,
+                left: 0.9 * constraints.maxWidth,
                 child: GestureDetector(
                   onTap: () {
                     Share.share(item.download_url.toString());
                   },
                   child: Icon(
                     Icons.share,
+                    size: 0.00032 *
+                        (constraints.maxHeight * constraints.maxWidth),
                     color: Colors.blue[300],
                   ),
                 ),
               ),
               Positioned(
-                  top: 210,
-                  left: 350,
+                  top: 0.85 * constraints.maxHeight,
+                  left: 0.9 * constraints.maxWidth,
                   child: GestureDetector(
-                      onTap: () {},
-                      child: Icon(Icons.file_download, color: Colors.white)))
+                      onTap: () {
+                        UrlUtil.launchURL(item.download_url);
+                      },
+                      child: Icon(Icons.file_download,
+                          size: 0.00034 *
+                              (constraints.maxHeight * constraints.maxWidth),
+                          color: Colors.white)))
             ],
-          )),
+          );
+        }),
+      ),
     );
   }
 }
@@ -274,7 +291,7 @@ class DetailScreen extends StatelessWidget {
             onTap: () {
               UrlUtil.launchURL(download_url);
             },
-            child: Icon(Icons.file_download),
+            child: Icon(Icons.file_download, size: 30),
           )
         ],
       ),

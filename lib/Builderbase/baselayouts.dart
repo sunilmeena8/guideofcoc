@@ -186,12 +186,15 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
     );
   }
 
-  Widget BaseLayoutCard(BaseLayoutItem item, String id) {
+  Widget BaseLayoutCard(BaseLayoutItem item, String documentId) {
     return Container(
-        width: 400,
-        height: 250,
-        margin: EdgeInsets.only(bottom: 20),
-        child: Stack(
+      width: 0.00013 * MediaQuery.of(context).size.width,
+      height: 0.28 * MediaQuery.of(context).size.height,
+      margin: EdgeInsets.only(bottom: 20),
+      child: new LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        // print(constraints.maxHeight);
+        return Stack(
           children: <Widget>[
             Center(child: CircularProgressIndicator()),
             new Positioned.fill(
@@ -209,50 +212,56 @@ class _BuilderBaseBaseLayoutsState extends State<BuilderBaseBaseLayouts> {
               ),
             ),
             Positioned(
-                top: 210,
-                left: 10,
+                top: 0.85 * constraints.maxHeight,
+                left: 0.015 * constraints.maxWidth,
                 child: GestureDetector(
-                    onTap: item.favourite == false
-                        ? () {
-                            item.favourite = !item.favourite;
-                            FavUtils.addFav(
-                                id,
-                                item.url + ";" + item.download_url,
-                                "builder base favourities");
-                            setState(() {});
-                          }
-                        : () {
-                            FavUtils.removeFav(id, "builder base favourities");
-                            setState(() {
-                              item.favourite = !item.favourite;
-                            });
-                          },
+                    onTap: () {
+                      if (item.favourite == false) {
+                        FavUtils.addFav(
+                            documentId,
+                            item.url + ";" + item.download_url,
+                            "builder base favourities");
+                      } else {
+                        FavUtils.removeFav(
+                            documentId, "builder base favourities");
+                      }
+                      setState(() {});
+                    },
                     child: Icon(Icons.favorite,
+                        size: 0.00034 *
+                            (constraints.maxHeight * constraints.maxWidth),
                         color: item.favourite == false
                             ? Colors.white
                             : Colors.pink[300]))),
             Positioned(
-              top: 10,
-              left: 350,
+              top: 0.019 * constraints.maxHeight,
+              left: 0.9 * constraints.maxWidth,
               child: GestureDetector(
                 onTap: () {
                   Share.share(item.download_url.toString());
                 },
                 child: Icon(
                   Icons.share,
+                  size:
+                      0.00032 * (constraints.maxHeight * constraints.maxWidth),
                   color: Colors.blue[300],
                 ),
               ),
             ),
             Positioned(
-                top: 210,
-                left: 350,
+                top: 0.85 * constraints.maxHeight,
+                left: 0.9 * constraints.maxWidth,
                 child: GestureDetector(
                     onTap: () {
-                      UrlUtil.launchURL(item.download_url.toString());
+                      UrlUtil.launchURL(item.download_url);
                     },
-                    child: Icon(Icons.file_download, color: Colors.white)))
+                    child: Icon(Icons.file_download,
+                        size: 0.00034 *
+                            (constraints.maxHeight * constraints.maxWidth),
+                        color: Colors.white)))
           ],
-        ));
+        );
+      }),
+    );
   }
 }
