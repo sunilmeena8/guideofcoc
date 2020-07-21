@@ -4,6 +4,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:guideofcoc/Homevillage/attackstrategy.dart';
 class BuilderBaseAttackStrategy extends StatefulWidget {
   @override
   _BuilderBaseAttackStrategyState createState() =>
@@ -160,10 +161,9 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
       );
     }
   }
-
   bool _isPlayerReady = false;
 
-  Widget AttackVideoCard(YoutubePlayerController _controller) {
+Widget AttackVideoCard(YoutubePlayerController _controller) {
     return Container(
       padding: EdgeInsets.only(bottom: 20),
       child: YoutubePlayerBuilder(
@@ -175,7 +175,30 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
             CurrentPosition(),
             ProgressBar(isExpanded: true),
             PlaybackSpeedButton(),
-            FullScreenButton(),
+            IconButton(
+              icon: Icon(
+                _controller.value.isFullScreen
+                    ? Icons.fullscreen_exit
+                    : Icons.fullscreen,
+                color: Colors.blueAccent,
+              ),
+              onPressed: () {
+                _controller.pause();
+                YoutubePlayerController controller = YoutubePlayerController(
+                  initialVideoId: _controller.initialVideoId,
+                  flags: const YoutubePlayerFlags(
+                    autoPlay: true,
+                  ),
+                );
+
+                _controller.toggleFullScreenMode();
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return FullScreen(controller);
+                })).then((value) {
+                  _controller.toggleFullScreenMode();
+                });
+              },
+            ),
           ],
           topActions: <Widget>[
             const SizedBox(width: 8.0),
@@ -205,4 +228,5 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
       ),
     );
   }
+  
 }

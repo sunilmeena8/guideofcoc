@@ -3,6 +3,10 @@ import 'package:guideofcoc/services.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+
+import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 
 class HomeBaseAttackStrategy extends StatefulWidget {
   @override
@@ -174,7 +178,30 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
             CurrentPosition(),
             ProgressBar(isExpanded: true),
             PlaybackSpeedButton(),
-            FullScreenButton(),
+            IconButton(
+              icon: Icon(
+                _controller.value.isFullScreen
+                    ? Icons.fullscreen_exit
+                    : Icons.fullscreen,
+                color: Colors.blueAccent,
+              ),
+              onPressed: () {
+                _controller.pause();
+                YoutubePlayerController controller = YoutubePlayerController(
+                  initialVideoId: _controller.initialVideoId,
+                  flags: const YoutubePlayerFlags(
+                    autoPlay: true,
+                  ),
+                );
+
+                _controller.toggleFullScreenMode();
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return FullScreen(controller);
+                })).then((value) {
+                  _controller.toggleFullScreenMode();
+                });
+              },
+            ),
           ],
           topActions: <Widget>[
             const SizedBox(width: 8.0),
@@ -203,5 +230,49 @@ class _HomeBaseAttackStrategyState extends State<HomeBaseAttackStrategy> {
         ),
       ),
     );
+  }
+}
+
+class FullScreen extends StatelessWidget {
+  final YoutubePlayerController _controller;
+
+  FullScreen(this._controller);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Color(0xff121212),
+        body: YoutubePlayer(
+          controller: _controller,
+          showVideoProgressIndicator: true,
+          progressIndicatorColor: Colors.amberAccent,
+          bottomActions: <Widget>[
+            CurrentPosition(),
+            ProgressBar(isExpanded: true),
+            PlaybackSpeedButton(),
+            IconButton(
+              icon: Icon(
+                Icons.fullscreen_exit,
+                color: Colors.blueAccent,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+          topActions: <Widget>[
+            const SizedBox(width: 8.0),
+            Expanded(
+              child: Text(
+                _controller.metadata.title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ],
+        ));
   }
 }
