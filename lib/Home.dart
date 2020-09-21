@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
     "Hey Clashers i have an amzing app for you, Pls Download..  https://play.google.com/store/apps/details?id=com.clashofclans.guideofcoc",
     "https://play.google.com/store/apps/details?id=com.clashofclans.guideofcoc",
   ];
-  final Firestore db = Firestore.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -47,17 +47,19 @@ class _HomeState extends State<Home> {
         mail();
         break;
       case "Rate Us":
-        launch_url(popupUrls[popupChoices.indexOf(value)]);
+        launchURL(popupUrls[popupChoices.indexOf(value)]);
         break;
     }
   }
 
   getSlider() {
     return CarouselSlider(
-      viewportFraction: 0.9,
-      aspectRatio: 2.0,
-      autoPlay: true,
-      enlargeCenterPage: true,
+      options: CarouselOptions(
+        viewportFraction: 0.9,
+        aspectRatio: 2.0,
+        autoPlay: true,
+        enlargeCenterPage: true,
+      ),
       items: appState[dataStrings[0]].map(
         (urls) {
           var imgUrl, pageUrl;
@@ -267,7 +269,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  launch_url(String url) async {
+  launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url, forceWebView: true);
     } else {

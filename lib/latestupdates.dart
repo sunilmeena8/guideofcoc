@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LatestUpdates extends StatefulWidget {
-  String url;
+  final String url;
   LatestUpdates(this.url);
   @override
   _LatestUpdatesState createState() => _LatestUpdatesState();
@@ -12,7 +12,6 @@ class LatestUpdates extends StatefulWidget {
 
 class _LatestUpdatesState extends State<LatestUpdates> {
   Completer<WebViewController> _controller = Completer<WebViewController>();
-  final Set<String> _favorites = Set<String>();
   bool loading = true;
 
   @override

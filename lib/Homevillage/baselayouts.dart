@@ -15,11 +15,11 @@ class HomeBaseBaseLayouts extends StatefulWidget {
 
 class BaseLayoutItem {
   String url;
-  String download_url;
+  String downloadURL;
   bool favourite;
   BaseLayoutItem({
     this.url,
-    this.download_url,
+    this.downloadURL,
     this.favourite,
   });
 }
@@ -34,7 +34,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     ),
   ];
 
-  final Firestore db = Firestore.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
   String _thvalue = appState[dataStrings[1]][0];
 
   static bool favourite = false;
@@ -124,22 +124,21 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
-          if (snapshot.data.documents.length > 0) {
+          if (snapshot.data.docs.length > 0) {
             return ListView(
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-              children:
-                  snapshot.data.documents.map((DocumentSnapshot document) {
+              children: snapshot.data.docs.map((DocumentSnapshot document) {
                 BaseLayoutItem item = new BaseLayoutItem();
-                item.url = document.data['url'];
-                item.download_url = document.data['download_url'];
+                item.url = document.data()['url'];
+                item.downloadURL = document.data()['download_url'];
                 item.favourite = favourite;
-                String documentId = document.documentID;
+                String documentId = document.id;
                 return FutureBuilder(
                     future:
                         FavUtils.getFav(documentId, "home village favourities"),
                     builder: (context, favourite) {
                       item.favourite = favourite.data;
-                      return BaseLayoutCard(item, documentId);
+                      return baseLayoutCard(item, documentId);
                     });
               }).toList(),
             );
@@ -193,7 +192,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
     );
   }
 
-  Widget BaseLayoutCard(BaseLayoutItem item, String documentId) {
+  Widget baseLayoutCard(BaseLayoutItem item, String documentId) {
     // print(MediaQuery.of(context).size.height);
     // print(MediaQuery.of(context).size.width);
 
@@ -212,7 +211,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return DetailScreen(item.url, item.download_url);
+                      return DetailScreen(item.url, item.downloadURL);
                     }));
                   },
                   child: FadeInImage.memoryNetwork(
@@ -230,7 +229,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                         if (item.favourite == false) {
                           FavUtils.addFav(
                               documentId,
-                              item.url + ";" + item.download_url,
+                              item.url + ";" + item.downloadURL,
                               "home village favourities");
                         } else {
                           FavUtils.removeFav(
@@ -249,7 +248,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                 left: 0.9 * constraints.maxWidth,
                 child: GestureDetector(
                   onTap: () {
-                    Share.share(item.download_url.toString());
+                    Share.share(item.downloadURL.toString());
                   },
                   child: Icon(
                     Icons.share,
@@ -264,7 +263,7 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
                   left: 0.9 * constraints.maxWidth,
                   child: GestureDetector(
                       onTap: () {
-                        UrlUtil.launchURL(item.download_url);
+                        UrlUtil.launchURL(item.downloadURL);
                       },
                       child: Icon(Icons.file_download,
                           size: 0.00034 *
@@ -279,8 +278,8 @@ class _HomeBaseBaseLayoutsState extends State<HomeBaseBaseLayouts> {
 }
 
 class DetailScreen extends StatelessWidget {
-  final String url, download_url;
-  DetailScreen(this.url, this.download_url);
+  final String url, downloadURL;
+  DetailScreen(this.url, this.downloadURL);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -289,7 +288,7 @@ class DetailScreen extends StatelessWidget {
         actions: <Widget>[
           GestureDetector(
             onTap: () {
-              UrlUtil.launchURL(download_url);
+              UrlUtil.launchURL(downloadURL);
             },
             child: Icon(Icons.file_download, size: 30),
           )

@@ -3,8 +3,8 @@ import 'package:guideofcoc/services.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:guideofcoc/Homevillage/attackstrategy.dart';
+
 class BuilderBaseAttackStrategy extends StatefulWidget {
   @override
   _BuilderBaseAttackStrategyState createState() =>
@@ -15,9 +15,7 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
   List<YoutubePlayerController> _controllers;
   String _bhvalue = appState[dataStrings[2]][0];
 
-  final Firestore db = Firestore.instance;
-  YoutubeMetaData _videoMetaData;
-  PlayerState _playerState;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +48,6 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
                       _bhvalue = value;
                       _controllers = null;
                       getControllers(_bhvalue);
-                      
                     });
                   },
                 ),
@@ -60,25 +57,23 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
           data: new ThemeData.dark(),
         ),
       ),
-      body: AttackVideoList(context, _bhvalue),
+      body: attackVideoList(context, _bhvalue),
     );
   }
 
   @override
   void initState() {
     getControllers(_bhvalue);
-    _videoMetaData = const YoutubeMetaData();
-    _playerState = PlayerState.unknown;
     super.initState();
   }
 
   getControllers(String bh) {
     db
         .collection("builderbase/attackvideos/" + bh + "/")
-        .getDocuments()
+        .get()
         .then((querySnapshot) {
-      querySnapshot.documents.forEach((result) async {
-        var urls = result.data['urls'];
+      querySnapshot.docs.forEach((result) async {
+        var urls = result.data()['urls'];
 
         var ids = [];
         if (urls.length > 0) {
@@ -106,14 +101,14 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
     });
   }
 
-  Widget AttackVideoList(context, String _thvalue) {
+  Widget attackVideoList(context, String _thvalue) {
     if (_controllers != null) {
       if (_controllers.length > 0) {
         return ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
             itemCount: _controllers.length,
             itemBuilder: (BuildContext context, int index) {
-              return AttackVideoCard(_controllers[index]);
+              return attackVideoCard(_controllers[index]);
             });
       } else {
         return Container(
@@ -161,9 +156,8 @@ class _BuilderBaseAttackStrategyState extends State<BuilderBaseAttackStrategy> {
       );
     }
   }
-  bool _isPlayerReady = false;
 
-Widget AttackVideoCard(YoutubePlayerController _controller) {
+  Widget attackVideoCard(YoutubePlayerController _controller) {
     return Container(
       padding: EdgeInsets.only(bottom: 20),
       child: YoutubePlayerBuilder(
@@ -215,11 +209,7 @@ Widget AttackVideoCard(YoutubePlayerController _controller) {
             ),
           ],
           onReady: () {
-            _isPlayerReady = true;
-
-            setState(() {
-              _videoMetaData = _controller.metadata;
-            });
+            setState(() {});
           },
         ),
         builder: (context, player) => Column(
@@ -228,5 +218,4 @@ Widget AttackVideoCard(YoutubePlayerController _controller) {
       ),
     );
   }
-  
 }

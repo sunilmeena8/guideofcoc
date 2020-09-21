@@ -55,9 +55,9 @@ class _FavouritiesState extends State<Favourities> {
                   children: keys.map((key) {
                     BaseLayoutItem item = new BaseLayoutItem();
                     item.url = map.data[key].split(";")[0];
-                    item.download_url = map.data[key].split(";")[0];
+                    item.downloadURL = map.data[key].split(";")[0];
                     item.favourite = true;
-                    return BaseLayoutCard(item, key);
+                    return baseLayoutCard(item, key);
                   }).toList(),
                 );
               } else {
@@ -91,7 +91,7 @@ class _FavouritiesState extends State<Favourities> {
     );
   }
 
-  Widget BaseLayoutCard(BaseLayoutItem item, String id) {
+  Widget baseLayoutCard(BaseLayoutItem item, String id) {
     return Container(
         width: 400,
         height: 250,
@@ -103,7 +103,7 @@ class _FavouritiesState extends State<Favourities> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return DetailScreen(item.url, item.download_url);
+                    return DetailScreen(item.url, item.downloadURL);
                   }));
                 },
                 child: FadeInImage.memoryNetwork(
@@ -122,7 +122,7 @@ class _FavouritiesState extends State<Favourities> {
                             item.favourite = !item.favourite;
                             FavUtils.addFav(
                                 id,
-                                item.url + ";" + item.download_url,
+                                item.url + ";" + item.downloadURL,
                                 widget.villageType);
                             setState(() {});
                           }
@@ -141,7 +141,7 @@ class _FavouritiesState extends State<Favourities> {
               left: 350,
               child: GestureDetector(
                 onTap: () {
-                  Share.share(item.download_url.toString());
+                  Share.share(item.downloadURL.toString());
                 },
                 child: Icon(
                   Icons.share,
@@ -154,7 +154,7 @@ class _FavouritiesState extends State<Favourities> {
                 left: 350,
                 child: GestureDetector(
                     onTap: () {
-                      UrlUtil.launchURL(item.download_url.toString());
+                      UrlUtil.launchURL(item.downloadURL.toString());
                     },
                     child: Icon(Icons.file_download, color: Colors.white)))
           ],

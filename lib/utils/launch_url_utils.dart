@@ -1,8 +1,8 @@
 import 'package:url_launcher/url_launcher.dart';
 
 class UrlUtil {
-  static launchURL(String copy_url) async {
-    String url = copy_url;
+  static launchURL(String copyURL) async {
+    String url = copyURL;
     if (await canLaunch(url)) {
       await launch(url);
     } else {

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:guideofcoc/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,10 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 import 'Home.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await checkSP();
   runApp(MyApp());
 }
@@ -32,17 +32,17 @@ checkSP() async {
 }
 
 getUpdates(List<String> data) async {
-    final Firestore db = Firestore.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
 
   await Future.forEach(data, (value) async {
-    await db.collection(value).getDocuments().then((querySnapshot) {
-      querySnapshot.documents.forEach((result) async {
+    await db.collection(value).get().then((querySnapshot) {
+      querySnapshot.docs.forEach((result) async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         Map<String, List<dynamic>> map = new Map<String, List<dynamic>>();
-        map[value] = result.data["list"];
+        map[value] = result.data()["list"];
         String jsonString = jsonEncode(map);
         prefs.setString(value, jsonString);
-        appState[value] = result.data['list'];
+        appState[value] = result.data()['list'];
       });
     });
   });
