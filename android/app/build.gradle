@@ -40,7 +40,7 @@ android {
 
     defaultConfig {
         applicationId "com.clashofclans.guideofcoc"
-        minSdkVersion 21
+        minSdkVersion 17
         targetSdkVersion 29
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
@@ -75,5 +75,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+
 }
 apply plugin: 'com.google.gms.google-services'
